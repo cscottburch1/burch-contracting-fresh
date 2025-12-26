@@ -1,6 +1,7 @@
-import crypto from 'crypto';
+import { cookies } from 'next/headers';
 import { cookies } from 'next/headers';
 
+const COOKIE_NAME = 'admin_session';
 const cookieStore = await cookies();
 cookieStore.set(COOKIE_NAME, cookieValue, {
   httpOnly: true,
