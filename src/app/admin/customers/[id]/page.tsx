@@ -63,23 +63,34 @@ export default function CustomerDetailPage() {
       if (response.ok) {
         setAuthenticated(true);
       } else {
+        console.error('Auth failed, redirecting to login');
         router.push('/admin');
       }
     } catch (error) {
+      console.error('Auth error:', error);
       router.push('/admin');
     }
   };
 
   const fetchCustomerDetails = async () => {
+    setLoading(true);
     try {
+      console.log('Fetching customer details for ID:', customerId);
       const response = await fetch(`/api/admin/customers/${customerId}`);
-      if (!response.ok) throw new Error('Failed to fetch customer');
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API error:', response.status, errorData);
+        throw new Error(errorData.error || 'Failed to fetch customer');
+      }
       
       const data = await response.json();
+      console.log('Customer data received:', data);
       setCustomer(data.customer);
       setProjects(data.projects || []);
     } catch (error) {
       console.error('Error fetching customer:', error);
+      alert('Failed to load customer details. Please try again.');
     } finally {
       setLoading(false);
     }
