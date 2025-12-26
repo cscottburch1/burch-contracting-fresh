@@ -54,6 +54,8 @@ export default function ProjectManagementPage() {
   const [showDocumentForm, setShowDocumentForm] = useState(false);
   const [updateForm, setUpdateForm] = useState({ title: '', content: '' });
   const [documentForm, setDocumentForm] = useState({ name: '', url: '', file_type: '', file_size: '' });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
   
   // Edit mode
   const [editMode, setEditMode] = useState(false);
@@ -160,13 +162,39 @@ export default function ProjectManagementPage() {
   const handleAddDocument = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!selectedFile) {
+      alert('Please select a file to upload');
+      return;
+    }
+
     try {
+      setUploading(true);
+
+      // Upload file first
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', selectedFile);
+
+      const uploadResponse = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: uploadFormData
+      });
+
+      if (!uploadResponse.ok) {
+        const error = await uploadResponse.json();
+        throw new Error(error.error || 'Failed to upload file');
+      }
+
+      const uploadData = await uploadResponse.json();
+
+      // Add document to project
       const response = await fetch(`/api/admin/projects/${projectId}/documents`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...documentForm,
-          file_size: documentForm.file_size ? parseInt(documentForm.file_size) : 0
+          name: documentForm.name || uploadData.filename,
+          url: uploadData.url,
+          file_type: uploadData.type,
+          file_size: uploadData.size
         })
       });
 
@@ -174,10 +202,13 @@ export default function ProjectManagementPage() {
 
       setShowDocumentForm(false);
       setDocumentForm({ name: '', url: '', file_type: '', file_size: '' });
+      setSelectedFile(null);
       fetchProjectDetails();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding document:', error);
-      alert('Failed to add document');
+      alert(error.message || 'Failed to add document');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -477,12 +508,6 @@ export default function ProjectManagementPage() {
               </Button>
             </div>
 
-            <Card>
-              <p className="text-sm text-gray-600 mb-4">
-                <strong>Note:</strong> For file uploads, you'll need to host files externally (e.g., AWS S3, Cloudinary) and provide the URL here.
-              </p>
-            </Card>
-
             {documents.length === 0 ? (
               <Card className="mt-4">
                 <div className="text-center py-12">
@@ -590,60 +615,41 @@ export default function ProjectManagementPage() {
 
               <form onSubmit={handleAddDocument} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Document Name *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Select File *</label>
+                  <input
+                    type="file"
+                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Maximum file size: 10MB. Supported formats: PDF, images, documents</p>
+                  {selectedFile && (
+                    <p className="text-sm text-green-600 mt-2">
+                      Selected: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Document Name (Optional)</label>
                   <input
                     type="text"
                     value={documentForm.name}
                     onChange={(e) => setDocumentForm({ ...documentForm, name: e.target.value })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g., Contract Agreement.pdf"
-                    required
+                    placeholder="Leave blank to use filename"
                   />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Document URL *</label>
-                  <input
-                    type="url"
-                    value={documentForm.url}
-                    onChange={(e) => setDocumentForm({ ...documentForm, url: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="https://..."
-                    required
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Host your file on a service like AWS S3, Dropbox, or Google Drive</p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">File Type</label>
-                    <input
-                      type="text"
-                      value={documentForm.file_type}
-                      onChange={(e) => setDocumentForm({ ...documentForm, file_type: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                      placeholder="e.g., PDF, Image, Document"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">File Size (bytes)</label>
-                    <input
-                      type="number"
-                      value={documentForm.file_size}
-                      onChange={(e) => setDocumentForm({ ...documentForm, file_size: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                      placeholder="0"
-                    />
-                  </div>
                 </div>
 
                 <div className="flex gap-3">
-                  <Button type="button" variant="outline" onClick={() => setShowDocumentForm(false)} className="flex-1">
+                  <Button type="button" variant="outline" onClick={() => {
+                    setShowDocumentForm(false);
+                    setSelectedFile(null);
+                  }} className="flex-1" disabled={uploading}>
                     Cancel
                   </Button>
-                  <Button type="submit" variant="primary" className="flex-1">
-                    Add Document
+                  <Button type="submit" variant="primary" className="flex-1" disabled={uploading}>
+                    {uploading ? 'Uploading...' : 'Upload & Add Document'}
                   </Button>
                 </div>
               </form>
