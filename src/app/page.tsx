@@ -7,10 +7,74 @@ import { TestimonialCard } from '@/components/ui/TestimonialCard';
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { Badge } from '@/components/ui/Badge';
 import { businessConfig } from '@/config/business';
+import Script from 'next/script';
 
 export default function HomePage() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Burch Contracting",
+    "image": "https://burchcontracting.com/og-image.jpg",
+    "@id": "https://burchcontracting.com",
+    "url": "https://burchcontracting.com",
+    "telephone": "(864) 724-4600",
+    "email": "estimates@burchcontracting.com",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "",
+      "addressLocality": "Simpsonville",
+      "addressRegion": "SC",
+      "postalCode": "29681",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 34.7371,
+      "longitude": -82.2543
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    "sameAs": [
+      "https://www.facebook.com/burchcontracting"
+    ],
+    "description": "Professional residential and light commercial contracting services in Simpsonville, SC. Quality craftsmanship, clear communication, and dependable service.",
+    "areaServed": {
+      "@type": "GeoCircle",
+      "geoMidpoint": {
+        "@type": "GeoCoordinates",
+        "latitude": 34.7371,
+        "longitude": -82.2543
+      },
+      "geoRadius": "50000"
+    },
+    "serviceType": [
+      "Home Repair",
+      "Remodeling",
+      "Renovation",
+      "General Contracting",
+      "Handyman Services",
+      "Commercial Contracting"
+    ]
+  };
+
   return (
     <>
+      <Script
+        id="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <section className="relative bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white py-20 md:py-32">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAgNC40MTgtMy41ODIgOC04IDhzLTgtMy41ODItOC04IDMuNTgyLTggOC04IDggMy41ODIgOCA4em0wIDI4YzAgNC40MTgtMy41ODIgOC04IDhzLTgtMy41ODItOC04IDMuNTgyLTggOC04IDggMy41ODIgOCA4eiIvPjwvZz48L2c+PC9zdmc+')] opacity-10"></div>
 
