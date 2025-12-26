@@ -1,7 +1,13 @@
 import crypto from 'crypto';
 import { cookies } from 'next/headers';
 
-const COOKIE_NAME = 'admin_session';
+const cookieStore = await cookies();
+cookieStore.set(COOKIE_NAME, cookieValue, {
+  httpOnly: true,
+  secure: true,
+  sameSite: 'lax',
+  // other options...
+});
 
 function b64url(input: Buffer | string) {
   const buf = Buffer.isBuffer(input) ? input : Buffer.from(input);
