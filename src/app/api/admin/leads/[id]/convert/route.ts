@@ -54,7 +54,7 @@ export async function POST(
 
     const customer = await queryOne('SELECT * FROM customers WHERE id = ?', [customerId]);
 
-    return NextResponse.json({ customer });
+    return NextResponse.json({ customer, customerId });
   } catch (error) {
     console.error('Error converting lead:', error);
     return NextResponse.json({ error: 'Failed to convert lead' }, { status: 500 });

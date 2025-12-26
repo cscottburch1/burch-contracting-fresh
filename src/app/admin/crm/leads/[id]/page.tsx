@@ -170,8 +170,10 @@ export default function LeadDetailPage() {
       setShowConvertModal(false);
       setCustomerPassword('');
       
+      const newCustomerId = data.customerId || data.customer?.id;
+      
       alert('Lead successfully converted to customer!');
-      router.push(`/admin/customers/${data.customerId}`);
+      router.push(`/admin/customers/${newCustomerId}`);
     } catch (error: any) {
       console.error('Error converting lead:', error);
       alert(error.message || 'Failed to convert lead to customer');
