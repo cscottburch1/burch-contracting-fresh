@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0",
     "lucide-react": "^0.562.0",
     "mysql2": "^3.12.0",
     "next": "16.1.1",
