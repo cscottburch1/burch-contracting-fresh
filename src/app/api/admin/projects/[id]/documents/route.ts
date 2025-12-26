@@ -21,8 +21,8 @@ export async function POST(
     }
 
     const result = await query(
-      'INSERT INTO documents (project_id, name, url, file_type, file_size, uploaded_by) VALUES (?, ?, ?, ?, ?, ?)',
-      [id, name, url, file_type || 'unknown', file_size || 0, adminUser.email]
+      'INSERT INTO documents (project_id, filename, filepath, filetype, filesize, uploaded_by) VALUES (?, ?, ?, ?, ?, ?)',
+      [id, name, url, file_type || 'unknown', file_size || 0, 'admin']
     );
 
     const docId = (result as any).insertId;

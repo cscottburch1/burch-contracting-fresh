@@ -29,10 +29,10 @@ interface ProjectUpdate {
 
 interface Document {
   id: number;
-  name: string;
-  url: string;
-  file_type: string;
-  file_size: number;
+  filename: string;
+  filepath: string;
+  filetype: string;
+  filesize: number;
   uploaded_by: string;
   created_at: string;
 }
@@ -527,15 +527,15 @@ export default function ProjectManagementPage() {
                         <Icon name="FileText" size={24} className="text-blue-600" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-1">{doc.name}</h4>
+                        <h4 className="font-semibold text-gray-900 mb-1">{doc.filename}</h4>
                         <p className="text-sm text-gray-600 mb-2">
-                          {doc.file_type} • {formatFileSize(doc.file_size)}
+                          {doc.filetype} • {formatFileSize(doc.filesize)}
                         </p>
                         <p className="text-xs text-gray-500 mb-3">
                           Uploaded by {doc.uploaded_by} on {formatDate(doc.created_at)}
                         </p>
                         <a
-                          href={doc.url}
+                          href={doc.filepath}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-sm text-blue-600 hover:text-blue-700 font-medium"
