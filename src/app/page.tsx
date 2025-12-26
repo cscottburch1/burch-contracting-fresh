@@ -90,7 +90,7 @@ export default function HomePage() {
               key={service.id}
               title={service.title}
               description={service.description}
-              icon={<Icon name={service.icon as any} size={32} />}
+              icon={<Icon name={service.icon as any} size={40} className="text-blue-600" />}
               href="/contact"
               compact
             />
