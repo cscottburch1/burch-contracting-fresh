@@ -1,4 +1,3 @@
-import React from 'react';
 import { Section } from '@/components/ui/Section';
 import { businessConfig } from '@/config/business';
 
@@ -34,4 +33,8 @@ export default function ServicesPage() {
       </a>
     </div>
   ))}
-</div>
+        </div>
+      </Section>
+    </>
+  );
+}
