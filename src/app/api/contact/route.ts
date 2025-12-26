@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sendLeadEmail } from '@/lib/mailer';
+import { query } from '@/lib/mysql';
 
 export async function POST(request: Request) {
   try {
@@ -24,8 +25,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // TODO: Add database storage logic here
-    // Example: await query('INSERT INTO leads (name, phone, email...) VALUES (?, ?, ?...)', [name, phone, email...]);
+    // Save lead to database
+    const result = await query<any>(
+      `INSERT INTO leads (name, phone, email, address, service_type, budget_range, timeframe, referral_source, description, status, priority)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', 'medium')`,
+      [name, phone, email, address || null, serviceType || null, budgetRange || null, timeframe || null, referralSource || null, description]
+    );
+
+    const leadId = (result as any).insertId;
 
     // Send email notification to admin
     const adminEmail = process.env.ADMIN_EMAIL;

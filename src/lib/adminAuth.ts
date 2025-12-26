@@ -88,4 +88,19 @@ export function getAdminSessionFromRequestCookie(cookieValue?: string | null) {
   return verifyAdminCookie(cookieValue);
 }
 
+// Helper function to verify admin authentication from a request
+export async function verifyAdminAuth(request: Request): Promise<AdminSession | null> {
+  const cookieHeader = request.headers.get('cookie');
+  if (!cookieHeader) return null;
+
+  const cookies = cookieHeader.split(';').reduce((acc, cookie) => {
+    const [key, value] = cookie.trim().split('=');
+    acc[key] = value;
+    return acc;
+  }, {} as Record<string, string>);
+
+  const sessionCookie = cookies[COOKIE_NAME];
+  return verifyAdminCookie(sessionCookie);
+}
+
 export const ADMIN_COOKIE_NAME = COOKIE_NAME;
