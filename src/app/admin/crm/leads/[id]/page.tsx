@@ -27,6 +27,10 @@ export default function LeadDetailPage() {
   const [noteType, setNoteType] = useState('general');
   const [isImportant, setIsImportant] = useState(false);
 
+  // Convert to customer
+  const [showConvertModal, setShowConvertModal] = useState(false);
+  const [customerPassword, setCustomerPassword] = useState('');
+
   useEffect(() => {
     checkAuth();
   }, []);
@@ -141,6 +145,39 @@ export default function LeadDetailPage() {
     }
   };
 
+  const handleConvertToCustomer = async () => {
+    if (!customerPassword.trim()) {
+      alert('Please enter a password for the customer portal');
+      return;
+    }
+
+    if (!confirm(`Convert ${lead?.name} to a customer with portal access?`)) return;
+
+    try {
+      const response = await fetch(`/api/admin/leads/${leadId}/convert`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: customerPassword })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to convert lead');
+      }
+
+      const data = await response.json();
+      
+      setShowConvertModal(false);
+      setCustomerPassword('');
+      
+      alert('Lead successfully converted to customer!');
+      router.push(`/admin/customers/${data.customerId}`);
+    } catch (error: any) {
+      console.error('Error converting lead:', error);
+      alert(error.message || 'Failed to convert lead to customer');
+    }
+  };
+
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       new: 'bg-blue-100 text-blue-800',
@@ -201,6 +238,12 @@ export default function LeadDetailPage() {
           <div className="flex gap-3">
             {!editMode ? (
               <>
+                {lead.status !== 'won' && (
+                  <Button variant="primary" onClick={() => setShowConvertModal(true)}>
+                    <Icon name="UserPlus" size={16} className="mr-2" />
+                    Convert to Customer
+                  </Button>
+                )}
                 <Button variant="outline" onClick={() => setEditMode(true)}>
                   <Icon name="Edit" size={16} className="mr-2" />
                   Edit
@@ -480,6 +523,56 @@ export default function LeadDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Convert to Customer Modal */}
+      {showConvertModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Convert to Customer</h2>
+                <button onClick={() => setShowConvertModal(false)} className="text-gray-400 hover:text-gray-600">
+                  <Icon name="X" size={24} />
+                </button>
+              </div>
+
+              <p className="text-gray-600 mb-6">
+                This will create a customer portal account for <strong>{lead?.name}</strong> with email <strong>{lead?.email}</strong>.
+                They'll be able to log in and view their projects, documents, and updates.
+              </p>
+
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Set Portal Password *
+                </label>
+                <input
+                  type="password"
+                  value={customerPassword}
+                  onChange={(e) => setCustomerPassword(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter password for customer"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  This password will be used for customer portal login. Please share it securely with the customer.
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                <Button type="button" variant="outline" onClick={() => {
+                  setShowConvertModal(false);
+                  setCustomerPassword('');
+                }} className="flex-1">
+                  Cancel
+                </Button>
+                <Button type="button" variant="primary" onClick={handleConvertToCustomer} className="flex-1">
+                  Convert to Customer
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </Section>
   );
 }
