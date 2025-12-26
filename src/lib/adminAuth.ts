@@ -1,14 +1,7 @@
 import { cookies } from 'next/headers';
-import { cookies } from 'next/headers';
+import crypto from 'crypto';
 
 const COOKIE_NAME = 'admin_session';
-const cookieStore = await cookies();
-cookieStore.set(COOKIE_NAME, cookieValue, {
-  httpOnly: true,
-  secure: true,
-  sameSite: 'lax',
-  // other options...
-});
 
 function b64url(input: Buffer | string) {
   const buf = Buffer.isBuffer(input) ? input : Buffer.from(input);
@@ -64,25 +57,27 @@ export function verifyAdminCookie(value: string | undefined | null): AdminSessio
   }
 }
 
-export function setAdminSessionCookie() {
+export async function setAdminSessionCookie() {
   const adminEmail = process.env.ADMIN_EMAIL;
   if (!adminEmail) throw new Error('Missing ADMIN_EMAIL');
 
   const cookieValue = createAdminCookie({ email: adminEmail, iat: Date.now() });
+  const cookieStore = await cookies();
 
-  cookies().set(COOKIE_NAME, cookieValue, {
+  cookieStore.set(COOKIE_NAME, cookieValue, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 12, // 12 hours
   });
 }
 
-export function clearAdminSessionCookie() {
-  cookies().set(COOKIE_NAME, '', {
+export async function clearAdminSessionCookie() {
+  const cookieStore = await cookies();
+  cookieStore.set(COOKIE_NAME, '', {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
     maxAge: 0,
