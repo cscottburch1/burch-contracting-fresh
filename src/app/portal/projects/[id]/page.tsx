@@ -328,9 +328,16 @@ export default function ProjectDetailsPage() {
                           <span className="capitalize">{doc.uploaded_by}</span>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm">
-                        <Icon name="Download" size={16} />
-                      </Button>
+                      <a
+                        href={doc.filepath}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download
+                      >
+                        <Button variant="outline" size="sm">
+                          <Icon name="Download" size={16} />
+                        </Button>
+                      </a>
                     </div>
                   </Card>
                 ))}
