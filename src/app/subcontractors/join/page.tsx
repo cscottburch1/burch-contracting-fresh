@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { SUBCONTRACTOR_SPECIALTIES } from '@/types/subcontractor';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 
 declare global {
   interface Window {
@@ -77,10 +75,8 @@ export default function SubcontractorJoinPage() {
   };
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-        {/* Hero Section */}
+    <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      {/* Hero Section */}
         <section className="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
@@ -519,7 +515,4 @@ export default function SubcontractorJoinPage() {
           </div>
         )}
       </main>
-      <Footer />
-    </>
   );
-}
