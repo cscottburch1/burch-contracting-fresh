@@ -3,6 +3,18 @@ export const businessConfig = {
   tagline: "Reliable Home Repair & Remodeling You Can Trust",
   description: "Professional residential and light commercial contracting services.",
 
+  credentials: {
+    bbbRating: "A+",
+    bbbSince: "2014",
+    yearsInBusiness: 30,
+    established: "1995",
+    bbbUrl: "https://www.bbb.org/us/sc/gray-court/profile/home-additions/burch-contracting-llc-0673-90007875",
+    googleRating: "5.0",
+    googleUrl: "https://www.google.com/maps/place/Burch+Contracting/@34.6341746,-82.0744941,17z/data=!4m7!3m6!1s0x88578d1a6ee3c001:0x147295d161e89612!8m2!3d34.6341746!4d-82.0744941!16s%2Fg%2F11bbrjh0dt",
+    licensed: true,
+    insured: true
+  },
+
   contact: {
     phone: "(864) 724-4600",
     email: "estimates@burchcontracting.com",

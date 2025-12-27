@@ -106,16 +106,18 @@ export default function HomePage() {
 
             <div className="flex flex-wrap items-center gap-6 md:gap-8 text-base animate-fade-in-up stagger-3 opacity-0">
               <div className="flex items-center gap-3 glass px-4 py-2 rounded-full">
-                <Icon name="ShieldCheck" size={24} className="text-green-400" />
-                <span className="font-medium">Licensed & Insured</span>
+                <div className="bg-blue-900 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-xs">
+                  A+
+                </div>
+                <span className="font-medium">BBB A+ Rated</span>
               </div>
               <div className="flex items-center gap-3 glass px-4 py-2 rounded-full">
                 <Icon name="Star" size={24} className="text-yellow-400" />
-                <span className="font-medium">5-Star Rated</span>
+                <span className="font-medium">5.0 Google Rating</span>
               </div>
               <div className="flex items-center gap-3 glass px-4 py-2 rounded-full">
-                <Icon name="MapPin" size={24} className="text-blue-400" />
-                <span className="font-medium">Local & Trusted</span>
+                <Icon name="ShieldCheck" size={24} className="text-green-400" />
+                <span className="font-medium">30 Years Experience</span>
               </div>
             </div>
           </div>
@@ -321,8 +323,30 @@ export default function HomePage() {
             Don't just take our word for it - hear from homeowners we've helped
           </p>
           
-          {/* Google Reviews Badge */}
-          <div className="flex items-center justify-center gap-4 mb-8">
+          {/* Trust Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+            {/* BBB A+ Badge */}
+            <a 
+              href="https://www.bbb.org/us/sc/gray-court/profile/home-additions/burch-contracting-llc-0673-90007875"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-white border-2 border-gray-200 rounded-lg px-6 py-4 hover:shadow-lg transition-all group"
+            >
+              <div className="flex items-center gap-2">
+                <div className="bg-blue-900 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg">
+                  A+
+                </div>
+                <div className="text-left">
+                  <div className="text-sm font-semibold text-gray-900">BBB Accredited</div>
+                  <div className="text-xs text-gray-600">A+ Rating Since 2014</div>
+                </div>
+              </div>
+              <svg className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+
+            {/* Google Reviews Badge */}
             <a 
               href="https://www.google.com/maps/place/Burch+Contracting/@34.6341746,-82.0744941,17z/data=!4m7!3m6!1s0x88578d1a6ee3c001:0x147295d161e89612!8m2!3d34.6341746!4d-82.0744941!16s%2Fg%2F11bbrjh0dt"
               target="_blank"
