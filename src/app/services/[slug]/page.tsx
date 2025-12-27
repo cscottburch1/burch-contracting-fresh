@@ -214,7 +214,7 @@ const serviceContent: Record<string, {
 };
 
 interface ServicePageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -224,7 +224,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
-  const service = serviceContent[params.slug];
+  const { slug } = await params;
+  const service = serviceContent[slug];
   
   if (!service) {
     return {
@@ -235,11 +236,11 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
   return {
     title: `${service.title} | Burch Contracting`,
     description: service.description,
-    keywords: `${params.slug}, ${service.title.toLowerCase()}, simpsonville sc, contractor`,
+    keywords: `${slug}, ${service.title.toLowerCase()}, simpsonville sc, contractor`,
     openGraph: {
       title: service.title,
       description: service.description,
-      url: `https://burchcontracting.com/services/${params.slug}`,
+      url: `https://burchcontracting.com/services/${slug}`,
       siteName: 'Burch Contracting',
       locale: 'en_US',
       type: 'website',
@@ -247,14 +248,15 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
   };
 }
 
-export default function ServicePage({ params }: ServicePageProps) {
-  const service = serviceContent[params.slug];
+export default async function ServicePage({ params }: ServicePageProps) {
+  const { slug } = await params;
+  const service = serviceContent[slug];
   
   if (!service) {
     notFound();
   }
 
-  const serviceConfig = businessConfig.services.find(s => s.id === params.slug);
+  const serviceConfig = businessConfig.services.find(s => s.id === slug);
   const relevantTestimonials = businessConfig.testimonials;
 
   const structuredData = {
