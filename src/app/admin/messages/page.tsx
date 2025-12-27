@@ -61,7 +61,7 @@ export default function AdminMessagesPage() {
 
   const fetchCustomerMessages = async (customerId: number) => {
     try {
-      const res = await fetch(`/api/admin/messages/${customerId}`);
+      const res = await fetch(`/api/admin/messages/customer/${customerId}`);
       if (res.ok) {
         const data = await res.json();
         setCustomerMessages(data.messages || []);
