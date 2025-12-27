@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { setAdminSessionCookie } from '@/lib/adminAuth';
+import { verifyAdminCredentials, setAdminSessionCookie } from '@/lib/adminAuth';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 export async function POST(request: Request) {
@@ -20,21 +20,23 @@ export async function POST(request: Request) {
           );
         }
 
-        const { password } = await request.json();
-        const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+        const { email, password } = await request.json();
 
-        if (!ADMIN_PASSWORD) {
-            return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+        if (!email || !password) {
+            return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
         }
 
-        if (password === ADMIN_PASSWORD) {
-            await setAdminSessionCookie();
-            return NextResponse.json({ success: true });
+        // Verify credentials against database
+        const user = await verifyAdminCredentials(email, password);
+
+        if (!user) {
+            console.warn(`Failed admin login attempt for ${email} from IP: ${clientIp}`);
+            return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
         }
 
-        // Log failed attempt
-        console.warn(`Failed admin login attempt from IP: ${clientIp}`);
-        return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+        // Create session
+        await setAdminSessionCookie(user);
+        return NextResponse.json({ success: true });
     } catch (error) {
         console.error('Login error:', error);
         return NextResponse.json({ error: 'Server error' }, { status: 500 });

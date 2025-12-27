@@ -5,6 +5,7 @@ export type AdminRole = 'owner' | 'manager' | 'sales' | 'support';
 export interface AdminUser {
   id: number;
   email: string;
+  password_hash: string; // Only populated from DB, never sent to client
   name: string;
   role: AdminRole;
   is_active: boolean;
