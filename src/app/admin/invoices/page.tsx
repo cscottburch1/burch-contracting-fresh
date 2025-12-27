@@ -74,12 +74,12 @@ export default function AdminInvoicesPage() {
   };
 
   const getStatusColor = (status: string) => {
-    const colors: Record<string, 'blue' | 'green' | 'gray' | 'orange' | 'red'> = {
+    const colors: Record<string, 'blue' | 'green' | 'gray' | 'orange'> = {
       draft: 'gray',
       sent: 'blue',
       viewed: 'orange',
       paid: 'green',
-      overdue: 'red',
+      overdue: 'orange',
       cancelled: 'gray',
     };
     return colors[status] || 'gray';

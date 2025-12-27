@@ -164,12 +164,12 @@ export default function ProposalDetailPage() {
   };
 
   const getStatusColor = (status: string) => {
-    const colors: Record<string, 'blue' | 'green' | 'gray' | 'orange' | 'red'> = {
+    const colors: Record<string, 'blue' | 'green' | 'gray' | 'orange'> = {
       draft: 'gray',
       sent: 'blue',
       viewed: 'orange',
       accepted: 'green',
-      declined: 'red',
+      declined: 'gray',
     };
     return colors[status] || 'gray';
   };
