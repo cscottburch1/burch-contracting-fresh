@@ -170,3 +170,47 @@ html {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+/* Print styles for invoices and proposals */
+@media print {
+  @page {
+    margin: 0.5in;
+    size: letter;
+  }
+
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .invoice-template,
+  .proposal-template {
+    box-shadow: none !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Ensure backgrounds print */
+  .bg-gray-900,
+  .bg-blue-600 {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Page break controls */
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+}
