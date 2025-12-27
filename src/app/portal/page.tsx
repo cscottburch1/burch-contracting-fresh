@@ -187,6 +187,17 @@ export default function PortalPage() {
             </Button>
           </form>
 
+          {isLogin && (
+            <div className="mt-4 text-center">
+              <a
+                href="/portal/forgot-password"
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Forgot password?
+              </a>
+            </div>
+          )}
+
           <div className="mt-6 text-center">
             <button
               type="button"
