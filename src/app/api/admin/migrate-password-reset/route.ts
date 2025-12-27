@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
-import { getCurrentUser } from '@/lib/adminAuth';
-import { getConnection } from '@/lib/mysql';
+import { getCurrentAdminUser } from '@/lib/adminAuth';
+import pool from '@/lib/mysql';
 import * as fs from 'fs';
 import * as path from 'path';
 
 export async function POST() {
   try {
     // Check if user is authenticated and is owner
-    const currentUser = await getCurrentUser();
+    const currentUser = await getCurrentAdminUser();
     if (!currentUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -26,7 +26,7 @@ export async function POST() {
       .map(s => s.trim())
       .filter(s => s.length > 0 && !s.startsWith('--'));
 
-    const connection = await getConnection();
+    const connection = await pool.getConnection();
     const results: string[] = [];
 
     try {
@@ -47,7 +47,7 @@ export async function POST() {
         results,
       });
     } finally {
-      connection.end();
+      connection.release();
     }
   } catch (error: any) {
     console.error('Migration error:', error);
