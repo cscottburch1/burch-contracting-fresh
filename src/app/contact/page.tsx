@@ -119,20 +119,23 @@ export default function ContactPage() {
   if (submitSuccess) {
     return (
       <>
-        <section className="bg-gradient-to-br from-blue-900 to-gray-900 text-white py-16 md:py-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
+        <section className="relative bg-gradient-to-br from-green-900 via-blue-900 to-gray-900 text-white py-16 md:py-24 overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAgNC40MTgtMy41ODIgOC04IDhzLTgtMy41ODItOC04IDMuNTgyLTggOC04IDggMy41ODIgOCA4em0wIDI4YzAgNC40MTgtMy41ODIgOC04IDhzLTgtMy41ODItOC04IDMuNTgyLTggOC04IDggMy41ODIgOCA4eiIvPjwvZz48L2c+PC9zdmc+')] opacity-10"></div>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in backdrop-blur">
+              <Icon name="Check" className="text-green-300" size={48} />
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in-up">Thank You!</h1>
+            <p className="text-xl md:text-2xl text-gray-200 mb-8 animate-fade-in-up stagger-1 opacity-0">
+              We've received your request and will get back to you within 24 hours.
+            </p>
           </div>
         </section>
 
         <Section background="white" padding="lg">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Icon name="Check" className="text-green-600" size={48} />
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Thank You!</h2>
-            <p className="text-xl text-gray-600 mb-8">
-              We've received your request and will get back to you within 24 hours. If you need immediate assistance, please give us a call.
+          <div className="max-w-2xl mx-auto text-center animate-fade-in-up stagger-2 opacity-0">
+            <p className="text-lg text-gray-600 mb-8">
+              If you need immediate assistance, please give us a call.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="primary" size="lg" href="/">
@@ -151,10 +154,13 @@ export default function ContactPage() {
 
   return (
     <>
-      <section className="bg-gradient-to-br from-blue-900 to-gray-900 text-white py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Get Your Free Estimate</h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+      <section className="relative bg-gradient-to-br from-blue-900 via-purple-900 to-gray-900 text-white py-20 md:py-28 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAgNC40MTgtMy41ODIgOC04IDhzLTgtMy41ODItOC04IDMuNTgyLTggOC04IDggMy41ODIgOCA4em0wIDI4YzAgNC40MTgtMy41ODIgOC04IDhzLTgtMy41ODItOC04IDMuNTgyLTggOC04IDggMy41ODIgOCA4eiIvPjwvZz48L2c+PC9zdmc+')] opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in-up">
+            Get Your <span className="gradient-text">Free Estimate</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto animate-fade-in-up stagger-1 opacity-0">
             Tell us about your project and we'll get back to you with a detailed estimate
           </p>
         </div>

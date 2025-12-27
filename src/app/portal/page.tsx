@@ -66,23 +66,25 @@ export default function PortalPage() {
   };
 
   return (
-    <Section padding="xl">
-      <div className="max-w-md mx-auto">
-        <Card>
-          <div className="flex items-center justify-center mb-6">
-            <div className="bg-orange-100 p-3 rounded-full">
-              <Icon name="Lock" size={32} className="text-orange-600" />
-            </div>
+    <>
+      <section className="relative bg-gradient-to-br from-orange-900 via-purple-900 to-gray-900 text-white py-16 md:py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAgNC40MTgtMy41ODIgOC04IDhzLTgtMy41ODItOC04IDMuNTgyLTggOC04IDggMy41ODIgOCA4em0wIDI4YzAgNC40MTgtMy41ODIgOC04IDhzLTgtMy41ODItOC04IDMuNTgyLTggOC04IDggMy41ODIgOCA4eiIvPjwvZz48L2c+PC9zdmc+')] opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="w-20 h-20 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in backdrop-blur">
+            <Icon name="Lock" size={48} className="text-orange-300" />
           </div>
-          
-          <h2 className="text-2xl font-bold text-center mb-2">
-            {isLogin ? 'Sign In' : 'Create Account'}
-          </h2>
-          <p className="text-gray-600 text-center mb-6">
-            {isLogin
-              ? 'Access your project dashboard'
-              : 'Register to track your projects'}
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in-up">
+            {isLogin ? <><span className="gradient-text">Customer</span> Portal</> : 'Create Your Account'}
+          </h1>
+          <p className="text-xl text-gray-200 animate-fade-in-up stagger-1 opacity-0">
+            {isLogin ? 'Track your projects and documents' : 'Register to access your project dashboard'}
           </p>
+        </div>
+      </section>
+
+      <Section padding="lg" background="white">
+        <div className="max-w-md mx-auto">
+          <Card className="animate-scale-in stagger-2 opacity-0 hover-lift">
 
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
@@ -210,5 +212,6 @@ export default function PortalPage() {
         </Card>
       </div>
     </Section>
+    </>
   );
 }
