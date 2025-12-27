@@ -18,7 +18,7 @@ export function Logo({ variant = 'header', className = '', href = '/' }: LogoPro
 
   const logoImage = (
     <Image
-      src="/logo.png?v=2"
+      src="/logo-transparent.png"
       alt="Burch Contracting Logo"
       width={size.width}
       height={size.height}
