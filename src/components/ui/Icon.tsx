@@ -18,7 +18,7 @@ const Icon: React.FC<IconProps> = ({ name, size = 24, className = '', strokeWidt
     return null;
   }
 
-  return <LucideIcon size={size} className={className} strokeWidth={strokeWidth} />;
+  return React.createElement(LucideIcon, { size, className, strokeWidth, 'aria-hidden': 'true' });
 };
 
 export default Icon;
