@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon } from '../ui/Icon';
+import { Logo } from '../ui/Logo';
 import { businessConfig } from '@/config/business';
 
 export const Footer: React.FC = () => {
@@ -10,11 +11,8 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Icon name="Hammer" className="text-white" size={24} />
-              </div>
-              <h3 className="text-xl font-bold">{businessConfig.name}</h3>
+            <div className="mb-6">
+              <Logo variant="footer" />
             </div>
             <p className="text-gray-400 mb-4">{businessConfig.description}</p>
           </div>
