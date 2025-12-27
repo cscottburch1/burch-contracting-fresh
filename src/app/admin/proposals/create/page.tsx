@@ -37,8 +37,11 @@ export default function CreateProposalPage() {
   }
 
   const handleProposalTypeSelect = (type: string) => {
-    // For now, just show an alert. We'll build the templates next
-    alert(`${type} proposal template coming soon!`);
+    if (type === 'handyman') {
+      router.push('/admin/proposals/create/handyman');
+    } else {
+      alert(`${type} proposal template coming soon!`);
+    }
   };
 
   return (
@@ -64,7 +67,7 @@ export default function CreateProposalPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
           {/* Handyman Services */}
           <button
-            onClick={() => handleProposalTypeSelect('Handyman Services')}
+            onClick={() => handleProposalTypeSelect('handyman')}
             className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all transform hover:scale-105 text-left group"
           >
             <div className="flex items-center justify-center mb-6">
