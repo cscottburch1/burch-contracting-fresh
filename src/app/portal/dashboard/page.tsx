@@ -260,6 +260,12 @@ export default function DashboardPage() {
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <Link href="/portal/projects">
+              <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition w-full">
+                <Icon name="Briefcase" size={24} className="text-orange-600 mb-2" />
+                <span className="text-sm font-medium">View Projects</span>
+              </button>
+            </Link>
             <Link href="/contact">
               <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition w-full">
                 <Icon name="Phone" size={24} className="text-orange-600 mb-2" />
@@ -269,10 +275,6 @@ export default function DashboardPage() {
             <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
               <Icon name="FileText" size={24} className="text-orange-600 mb-2" />
               <span className="text-sm font-medium">Documents</span>
-            </button>
-            <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
-              <Icon name="MessageCircle" size={24} className="text-orange-600 mb-2" />
-              <span className="text-sm font-medium">Messages</span>
             </button>
             <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
               <Icon name="User" size={24} className="text-orange-600 mb-2" />
