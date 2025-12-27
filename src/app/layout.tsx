@@ -22,6 +22,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Burch Contracting" }],
   creator: "Burch Contracting",
   publisher: "Burch Contracting",
+  icons: {
+    icon: '/favicon.webp',
+    apple: '/favicon.webp',
+  },
   openGraph: {
     type: "website",
     locale: "en_US",

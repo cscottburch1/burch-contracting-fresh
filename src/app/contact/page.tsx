@@ -81,6 +81,18 @@ export default function ContactPage() {
       newErrors.timeframe = 'Project timeframe is required';
     }
 
+    if (!formData.preferredDate) {
+      newErrors.preferredDate = 'Preferred consultation date is required';
+    }
+
+    if (!formData.preferredTime) {
+      newErrors.preferredTime = 'Preferred time is required';
+    }
+
+    if (!formData.referralSource) {
+      newErrors.referralSource = 'Please let us know how you heard about us';
+    }
+
     if (!formData.description.trim()) {
       newErrors.description = 'Project description is required';
     }
@@ -145,6 +157,8 @@ export default function ContactPage() {
           preferredTime: '',
           website: ''
         });
+        // Scroll to top to show success message
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         const errorData = await response.json();
         setErrors({ submit: errorData.error || 'Something went wrong. Please try again or call us directly.' });
@@ -181,18 +195,46 @@ export default function ContactPage() {
         </section>
 
         <Section background="white" padding="lg">
-          <div className="max-w-2xl mx-auto text-center animate-fade-in-up stagger-2 opacity-0">
-            <p className="text-lg text-gray-600 mb-8">
-              If you need immediate assistance, please give us a call.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="primary" size="lg" href="/">
-                Return to Home
-              </Button>
-              <Button variant="outline" size="lg" href={`tel:${businessConfig.contact.phone}`}>
-                <Icon name="Phone" size={20} />
-                Call Now
-              </Button>
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Left side - Call to action */}
+              <div className="text-center md:text-left">
+                <p className="text-lg text-gray-600 mb-6">
+                  If you need immediate assistance, please give us a call.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center">
+                  <Button variant="primary" size="lg" href="/">
+                    Return to Home
+                  </Button>
+                  <Button variant="outline" size="lg" href={`tel:${businessConfig.contact.phone}`}>
+                    <Icon name="Phone" size={20} />
+                    Call Now
+                  </Button>
+                </div>
+              </div>
+
+              {/* Right side - What Happens Next */}
+              <Card padding="lg" className="bg-blue-50">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">What Happens Next?</h3>
+                <ol className="space-y-3 text-sm text-gray-700">
+                  <li className="flex gap-2">
+                    <span className="font-bold text-blue-600">1.</span>
+                    <span>We'll review your request within 24 hours</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="font-bold text-blue-600">2.</span>
+                    <span>We'll contact you to schedule a consultation</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="font-bold text-blue-600">3.</span>
+                    <span>We'll visit your property to assess the project</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="font-bold text-blue-600">4.</span>
+                    <span>You'll receive a detailed written estimate</span>
+                  </li>
+                </ol>
+              </Card>
             </div>
           </div>
         </Section>
@@ -234,6 +276,7 @@ export default function ContactPage() {
                         errors.name ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="John Smith"
+                      required
                     />
                     {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
                   </div>
@@ -252,6 +295,7 @@ export default function ContactPage() {
                         errors.phone ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="(555) 123-4567"
+                      required
                     />
                     {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
                   </div>
@@ -272,6 +316,7 @@ export default function ContactPage() {
                         errors.email ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="john@example.com"
+                      required
                     />
                     {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
                   </div>
@@ -373,14 +418,17 @@ export default function ContactPage() {
 
                   <div>
                     <label htmlFor="referralSource" className="block text-sm font-semibold text-gray-700 mb-2">
-                      How Did You Hear About Us?
+                      How Did You Hear About Us? <span className="text-red-500">*</span>
                     </label>
                     <select
                       id="referralSource"
                       name="referralSource"
                       value={formData.referralSource}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                        errors.referralSource ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      required
                     >
                       <option value="">Select source...</option>
                       <option value="google">Google Search</option>
@@ -390,13 +438,14 @@ export default function ContactPage() {
                       <option value="yard-sign">Yard Sign</option>
                       <option value="other">Other</option>
                     </select>
+                    {errors.referralSource && <p className="mt-1 text-sm text-red-500">{errors.referralSource}</p>}
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="preferredDate" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Preferred Consultation Date
+                      Preferred Consultation Date <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="date"
@@ -405,20 +454,27 @@ export default function ContactPage() {
                       value={formData.preferredDate}
                       onChange={handleChange}
                       min={new Date().toISOString().split('T')[0]}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                        errors.preferredDate ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      required
                     />
+                    {errors.preferredDate && <p className="mt-1 text-sm text-red-500">{errors.preferredDate}</p>}
                   </div>
 
                   <div>
                     <label htmlFor="preferredTime" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Preferred Time
+                      Preferred Time <span className="text-red-500">*</span>
                     </label>
                     <select
                       id="preferredTime"
                       name="preferredTime"
                       value={formData.preferredTime}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                        errors.preferredTime ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      required
                     >
                       <option value="">Select time...</option>
                       <option value="morning">Morning (8am-12pm)</option>
@@ -426,6 +482,7 @@ export default function ContactPage() {
                       <option value="evening">Evening (4pm-7pm)</option>
                       <option value="flexible">Flexible</option>
                     </select>
+                    {errors.preferredTime && <p className="mt-1 text-sm text-red-500">{errors.preferredTime}</p>}
                   </div>
                 </div>
 
@@ -433,49 +490,6 @@ export default function ContactPage() {
                   <p className="text-sm text-blue-800">
                     <strong>Note:</strong> Requested dates and times are not guaranteed but we will do our best to accommodate your schedule. We'll confirm your appointment within 24 hours.
                   </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="timeframe" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Preferred Timeframe
-                    </label>
-                    <select
-                      id="timeframe"
-                      name="timeframe"
-                      value={formData.timeframe}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    >
-                      <option value="">Select timeframe...</option>
-                      <option value="asap">ASAP</option>
-                      <option value="within-1-month">Within 1 month</option>
-                      <option value="1-3-months">1-3 months</option>
-                      <option value="3-plus-months">3+ months</option>
-                      <option value="flexible">Flexible</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="referralSource" className="block text-sm font-semibold text-gray-700 mb-2">
-                      How did you hear about us?
-                    </label>
-                    <select
-                      id="referralSource"
-                      name="referralSource"
-                      value={formData.referralSource}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    >
-                      <option value="">Select option...</option>
-                      <option value="google">Google Search</option>
-                      <option value="social-media">Social Media</option>
-                      <option value="referral">Friend/Family Referral</option>
-                      <option value="previous-customer">Previous Customer</option>
-                      <option value="yard-sign">Yard Sign</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
                 </div>
 
                 <div>
@@ -492,6 +506,7 @@ export default function ContactPage() {
                       errors.description ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Tell us about your project... What work needs to be done? Any specific requirements or concerns?"
+                    required
                   />
                   {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description}</p>}
                 </div>

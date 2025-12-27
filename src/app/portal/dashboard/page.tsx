@@ -185,10 +185,12 @@ export default function DashboardPage() {
         <div className="mb-8">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-xl font-bold text-gray-900">Your Projects</h3>
-            <Button variant="primary" size="sm">
-              <Icon name="Plus" size={16} className="mr-2" />
-              Request New Project
-            </Button>
+            <Link href="/contact">
+              <Button variant="primary" size="sm">
+                <Icon name="Plus" size={16} className="mr-2" />
+                Request New Project
+              </Button>
+            </Link>
           </div>
 
           {projects.length === 0 ? (
