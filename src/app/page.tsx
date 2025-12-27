@@ -240,11 +240,47 @@ export default function HomePage() {
               </div>
             </div>
           </a>
+
+          <a href="/service-areas/fountain-inn" className="group">
+            <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-red-600">
+              <Icon name="MapPin" size={32} className="text-red-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Fountain Inn</h3>
+              <p className="text-sm text-gray-600 mb-3">Historic Town</p>
+              <div className="flex items-center justify-center text-red-600 text-sm font-semibold">
+                Learn More
+                <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </a>
+
+          <a href="/service-areas/mauldin" className="group">
+            <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-indigo-600">
+              <Icon name="MapPin" size={32} className="text-indigo-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Mauldin</h3>
+              <p className="text-sm text-gray-600 mb-3">Established</p>
+              <div className="flex items-center justify-center text-indigo-600 text-sm font-semibold">
+                Learn More
+                <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </a>
+
+          <a href="/service-areas/laurens" className="group">
+            <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-amber-600">
+              <Icon name="MapPin" size={32} className="text-amber-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Laurens</h3>
+              <p className="text-sm text-gray-600 mb-3">County Seat</p>
+              <div className="flex items-center justify-center text-amber-600 text-sm font-semibold">
+                Learn More
+                <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </a>
         </div>
 
         <div className="text-center mt-12">
           <p className="text-gray-600 mb-4">
-            Also serving Fountain Inn, Mauldin, and surrounding communities
+            Serving the greater Greenville-Spartanburg area and surrounding communities
           </p>
           <Button variant="outline" href="/contact">
             <Icon name="Phone" size={20} />

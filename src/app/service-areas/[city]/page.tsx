@@ -289,6 +289,164 @@ const cityContent: Record<string, {
       "Growing interest in hobby farming and sustainable living"
     ],
     servicesIntro: "Gray Court homeowners need contractors who understand rural properties and country living. We're experienced with the unique challenges and opportunities of homes on acreage."
+  },
+  "fountain-inn": {
+    name: "Fountain Inn",
+    displayName: "Fountain Inn, SC",
+    tagline: "Quality Home Services for Fountain Inn's Growing Community",
+    history: "Fountain Inn's history dates to 1832 when it was named after a well-known watering hole for travelers between Charleston and the mountains. The arrival of the railroad transformed the town into a thriving textile center by the late 1800s. Like many Upstate towns, Fountain Inn's textile heritage shaped its character, with mill villages and worker housing defining much of the historic residential areas. The town has successfully transitioned from its industrial past to become a desirable bedroom community.",
+    modernDay: {
+      population: "Over 10,000 residents",
+      growth: "Steady 20%+ growth over the past decade",
+      characteristics: [
+        "Mix of historic mill homes and modern subdivisions",
+        "Revitalized downtown with local shops and restaurants",
+        "Strong community identity and hometown feel",
+        "Excellent location between Greenville and Simpsonville",
+        "Growing retail and commercial development"
+      ]
+    },
+    neighborhoods: [
+      {
+        name: "Historic Downtown",
+        description: "Original mill village homes and early 20th century residential areas",
+        homeTypes: "Mill houses, bungalows, modest historic homes (1900s-1940s)"
+      },
+      {
+        name: "Golden Strip Area",
+        description: "Established neighborhoods with convenient access to shopping and I-385",
+        homeTypes: "Ranch and traditional homes (1970s-1990s)"
+      },
+      {
+        name: "Eastside Developments",
+        description: "Growing area with newer residential communities",
+        homeTypes: "Contemporary single-family homes, townhomes (2000s-present)"
+      }
+    ],
+    whyChooseUs: [
+      "Historic mill homes require specialized maintenance and updates",
+      "Growing families need reliable contractors for home improvements",
+      "Strong real estate market means homeowners invest in renovations",
+      "Many homes reaching 20-40 years need modernization",
+      "Active community values quality workmanship and local service",
+      "Mix of first-time buyers and long-time residents both need trusted contractors"
+    ],
+    localInsights: [
+      "Fountain Inn Farmers Market is a popular Saturday tradition",
+      "Annual Lazy Daze Arts & Crafts Festival draws thousands",
+      "Historic downtown revitalization creating vibrant community center",
+      "Strong school system attracts families",
+      "Growing business community along Golden Strip",
+      "Close-knit neighborhoods with active community involvement"
+    ],
+    servicesIntro: "Fountain Inn residents value quality work, fair pricing, and personal service. We understand this community's mix of historic charm and modern growth."
+  },
+  mauldin: {
+    name: "Mauldin",
+    displayName: "Mauldin, SC",
+    tagline: "Trusted Contracting Services for Mauldin's Established Community",
+    history: "Incorporated in 1960, Mauldin is one of the Upstate's younger municipalities, though the area has been settled since the 1700s. Named after the Mauldin family who were early settlers, the city grew rapidly in the post-WWII suburban boom. Mauldin developed as a bedroom community for Greenville, with most growth occurring from the 1960s through the 1990s. The city has maintained a strong sense of community identity despite being surrounded by larger municipalities.",
+    modernDay: {
+      population: "Over 25,000 residents",
+      growth: "Stable community with selective infill development",
+      characteristics: [
+        "Primarily 1960s-2000s suburban development",
+        "Well-established neighborhoods with mature landscaping",
+        "Strong city services and community amenities",
+        "Convenient access to downtown Greenville",
+        "Mix of original homeowners and new families"
+      ]
+    },
+    neighborhoods: [
+      {
+        name: "Historic Mauldin",
+        description: "Original residential areas from the 1960s-70s suburban expansion",
+        homeTypes: "Ranch homes, split-levels, modest single-family homes (1960s-1980s)"
+      },
+      {
+        name: "Butler Road Area",
+        description: "Established neighborhoods with convenient access to shopping",
+        homeTypes: "Traditional suburban homes, varied architectural styles (1970s-1990s)"
+      },
+      {
+        name: "Eastern Mauldin",
+        description: "Later development with larger lots and homes",
+        homeTypes: "Contemporary and traditional designs (1990s-2010s)"
+      }
+    ],
+    whyChooseUs: [
+      "Many homes are 30-60 years old and need significant updates",
+      "Original homeowners aging in place require accessibility modifications",
+      "Kitchen and bathroom remodels extremely popular in established neighborhoods",
+      "Mature properties need regular maintenance and repairs",
+      "Strong real estate market means sellers invest in pre-sale improvements",
+      "Community values experienced contractors familiar with older home construction"
+    ],
+    localInsights: [
+      "Mauldin Cultural Center hosts community events year-round",
+      "Mauldin Sports Center draws families from across the region",
+      "Excellent city services including recreation programs",
+      "Strong neighborhood associations and community pride",
+      "Convenient to Greenville employment and entertainment",
+      "Family-friendly atmosphere with good schools"
+    ],
+    servicesIntro: "Mauldin homeowners need contractors who understand the unique challenges of updating established homes while maintaining their character and value."
+  },
+  laurens: {
+    name: "Laurens",
+    displayName: "Laurens, SC",
+    tagline: "Dependable Home Services for Laurens' Historic County Seat",
+    history: "Founded in 1785, Laurens is one of South Carolina's oldest inland cities and serves as the county seat. The city's historic downtown square is anchored by the 1838 courthouse and features well-preserved 19th and early 20th century architecture. Laurens thrived as a textile center for over a century, with several large mills defining the local economy. The city has maintained its historic character while adapting to modern economic realities, with a focus on preserving its architectural heritage.",
+    modernDay: {
+      population: "Approximately 9,000 residents in city, 67,000+ in county",
+      growth: "Stable population with focus on downtown revitalization",
+      characteristics: [
+        "Rich historic architecture from multiple eras",
+        "Affordable housing market attracting families and retirees",
+        "Strong sense of community and Southern hospitality",
+        "Mix of historic homes, mid-century neighborhoods, and newer development",
+        "Growing arts and culture scene in downtown"
+      ]
+    },
+    neighborhoods: [
+      {
+        name: "Historic Downtown",
+        description: "Beautifully preserved Victorian and early 20th century homes",
+        homeTypes: "Victorian, Queen Anne, Colonial Revival, historic mansions (1880s-1930s)"
+      },
+      {
+        name: "Mill Villages",
+        description: "Original textile worker housing with historic character",
+        homeTypes: "Mill houses, bungalows, modest historic homes (1900s-1950s)"
+      },
+      {
+        name: "Midtown & Bypass Areas",
+        description: "Mid-century development with affordable family homes",
+        homeTypes: "Ranch, traditional suburban homes (1950s-1980s)"
+      },
+      {
+        name: "New Developments",
+        description: "Growing residential areas on city outskirts",
+        homeTypes: "Contemporary single-family homes, affordable new construction (1990s-present)"
+      }
+    ],
+    whyChooseUs: [
+      "Historic homes require specialized knowledge and careful restoration",
+      "Many properties are on historic registers requiring proper maintenance approaches",
+      "Affordable housing market attracts renovators and first-time buyers needing updates",
+      "Mill houses have unique construction that requires experienced contractors",
+      "Growing interest in downtown living means more renovation projects",
+      "Small-town community values honest, reliable, and fairly-priced service"
+    ],
+    localInsights: [
+      "Laurens County Museum preserves rich local history",
+      "Historic downtown district features beautiful architecture",
+      "Active arts community with galleries and cultural events",
+      "Affordable cost of living attracts young families and retirees",
+      "Strong emphasis on historic preservation",
+      "Lake Greenwood and Lake Rabon offer nearby recreation"
+    ],
+    servicesIntro: "Laurens homeowners, from historic downtown estates to affordable starter homes, need contractors who respect the city's heritage while delivering modern quality and service."
   }
 };
 
@@ -301,6 +459,9 @@ export async function generateStaticParams() {
     { city: 'simpsonville' },
     { city: 'greenville' },
     { city: 'five-forks' },
+    { city: 'fountain-inn' },
+    { city: 'mauldin' },
+    { city: 'laurens' },
     { city: 'woodruff' },
     { city: 'gray-court' }
   ];

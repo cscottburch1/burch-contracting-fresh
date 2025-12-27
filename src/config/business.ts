@@ -22,7 +22,7 @@ export const businessConfig = {
 
   serviceArea: {
     description: "Proudly serving Simpsonville and surrounding communities",
-    locations: ["Simpsonville", "Greenville", "Five Forks", "Woodruff", "Gray Court", "Fountain Inn", "Mauldin"]
+    locations: ["Simpsonville", "Greenville", "Five Forks", "Fountain Inn", "Mauldin", "Laurens", "Woodruff", "Gray Court"]
   },
 
   services: [
