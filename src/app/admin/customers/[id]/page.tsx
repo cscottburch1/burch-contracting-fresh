@@ -38,6 +38,14 @@ export default function CustomerDetailPage() {
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const [showProjectForm, setShowProjectForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [editForm, setEditForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: ''
+  });
   const [projectForm, setProjectForm] = useState({
     title: '',
     description: '',
@@ -88,11 +96,61 @@ export default function CustomerDetailPage() {
       console.log('Customer data received:', data);
       setCustomer(data.customer);
       setProjects(data.projects || []);
+      setEditForm({
+        name: data.customer.name,
+        email: data.customer.email,
+        phone: data.customer.phone || '',
+        address: data.customer.address || ''
+      });
     } catch (error) {
       console.error('Error fetching customer:', error);
       alert('Failed to load customer details. Please try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpdateCustomer = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`/api/admin/customers/${customerId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editForm)
+      });
+
+      if (!response.ok) throw new Error('Failed to update customer');
+
+      setShowEditForm(false);
+      fetchCustomerDetails();
+      alert('Customer updated successfully!');
+    } catch (error) {
+      console.error('Error updating customer:', error);
+      alert('Failed to update customer');
+    }
+  };
+
+  const handleDeleteCustomer = async () => {
+    try {
+      const response = await fetch(`/api/admin/customers/${customerId}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || 'Failed to delete customer');
+        return;
+      }
+
+      alert('Customer deleted successfully!');
+      router.push('/admin/customers');
+    } catch (error) {
+      console.error('Error deleting customer:', error);
+      alert('Failed to delete customer');
+    } finally {
+      setShowDeleteConfirm(false);
     }
   };
 
@@ -179,10 +237,20 @@ export default function CustomerDetailPage() {
             <h1 className="text-3xl font-bold text-gray-900">{customer.name}</h1>
             <p className="text-gray-600 mt-2">{customer.email} • {customer.phone}</p>
           </div>
-          <Button variant="primary" onClick={() => setShowProjectForm(true)}>
-            <Icon name="Plus" size={16} className="mr-2" />
-            New Project
-          </Button>
+          <div className="flex gap-3">
+            <Button variant="outline" onClick={() => setShowEditForm(true)}>
+              <Icon name="Edit" size={16} className="mr-2" />
+              Edit Customer
+            </Button>
+            <Button variant="outline" onClick={() => setShowDeleteConfirm(true)} className="text-red-600 hover:text-red-700 hover:border-red-600">
+              <Icon name="Trash2" size={16} className="mr-2" />
+              Delete
+            </Button>
+            <Button variant="primary" onClick={() => setShowProjectForm(true)}>
+              <Icon name="Plus" size={16} className="mr-2" />
+              New Project
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -383,6 +451,119 @@ export default function CustomerDetailPage() {
                   </Button>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Customer Modal */}
+      {showEditForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Edit Customer</h2>
+                <button
+                  onClick={() => setShowEditForm(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <Icon name="X" size={24} />
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdateCustomer} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+                  <input
+                    type="text"
+                    value={editForm.name}
+                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                  <input
+                    type="email"
+                    value={editForm.email}
+                    onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                  <input
+                    type="tel"
+                    value={editForm.phone}
+                    onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                  <textarea
+                    value={editForm.address}
+                    onChange={(e) => setEditForm({ ...editForm, address: e.target.value })}
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div className="flex gap-3 mt-6">
+                  <Button type="button" variant="outline" onClick={() => setShowEditForm(false)} className="flex-1">
+                    Cancel
+                  </Button>
+                  <Button type="submit" variant="primary" className="flex-1">
+                    Save Changes
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-gray-900">Delete Customer</h2>
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <Icon name="X" size={24} />
+                </button>
+              </div>
+
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to delete <strong>{customer.name}</strong>? This action cannot be undone.
+                {projects.length > 0 && (
+                  <span className="block mt-2 text-orange-600 font-medium">
+                    This customer has {projects.length} project(s). Deletion may be prevented.
+                  </span>
+                )}
+              </p>
+
+              <div className="flex gap-3">
+                <Button type="button" variant="outline" onClick={() => setShowDeleteConfirm(false)} className="flex-1">
+                  Cancel
+                </Button>
+                <Button 
+                  type="button" 
+                  onClick={handleDeleteCustomer} 
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Delete Customer
+                </Button>
+              </div>
             </div>
           </div>
         </div>

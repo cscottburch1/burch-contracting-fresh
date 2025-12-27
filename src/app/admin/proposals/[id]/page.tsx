@@ -49,6 +49,7 @@ export default function ProposalDetailPage() {
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const [statusUpdating, setStatusUpdating] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -121,6 +122,27 @@ export default function ProposalDetailPage() {
     } finally {
       setStatusUpdating(false);
     }
+  };
+
+  const handleDeleteProposal = async () => {
+    try {
+      const response = await fetch(`/api/admin/proposals/${proposalId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        alert('Proposal deleted successfully');
+        router.push('/admin/proposals');
+      } else {
+        const data = await response.json();
+        alert(data.error || 'Failed to delete proposal');
+      }
+    } catch (error) {
+      console.error('Error deleting proposal:', error);
+      alert('Failed to delete proposal');
+    }
+    setShowDeleteConfirm(false);
   };
 
   const resendEmail = async () => {
@@ -228,6 +250,14 @@ export default function ProposalDetailPage() {
             <p className="text-gray-600 mt-2">{proposal.proposal_type}</p>
           </div>
           <div className="flex gap-3">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowDeleteConfirm(true)}
+              className="text-red-600 hover:text-red-700 hover:border-red-600"
+            >
+              <Icon name="Trash2" size={16} className="mr-2" />
+              Delete
+            </Button>
             <Button variant="outline" onClick={resendEmail}>
               <Icon name="Send" size={16} className="mr-2" />
               {proposal.status === 'draft' ? 'Send Email' : 'Resend Email'}
@@ -415,6 +445,46 @@ export default function ProposalDetailPage() {
           </Card>
         )}
       </div>
-    </Section>
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-gray-900">Delete Proposal</h2>
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <Icon name="X" size={24} />
+                </button>
+              </div>
+
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to delete proposal <strong>{proposal.proposal_number}</strong>? This action cannot be undone.
+                {proposal.status === 'accepted' && (
+                  <span className="block mt-2 text-orange-600 font-medium">
+                    This proposal has been accepted and cannot be deleted.
+                  </span>
+                )}
+              </p>
+
+              <div className="flex gap-3">
+                <Button type="button" variant="outline" onClick={() => setShowDeleteConfirm(false)} className="flex-1">
+                  Cancel
+                </Button>
+                <Button 
+                  type="button" 
+                  onClick={handleDeleteProposal}
+                  disabled={proposal.status === 'accepted'}
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                  Delete Proposal
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}    </Section>
   );
 }
