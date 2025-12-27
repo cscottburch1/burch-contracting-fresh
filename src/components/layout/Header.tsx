@@ -12,6 +12,7 @@ export const Header: React.FC = () => {
   const navLinks = [
     { label: 'Home', href: '/' },
     { label: 'Services', href: '/services' },
+    { label: 'Subcontractors', href: '/subcontractors/join' },
     { label: 'Customer Portal', href: '/portal' },
     { label: 'Contact', href: '/contact' },
     { label: 'Admin', href: '/admin' }
