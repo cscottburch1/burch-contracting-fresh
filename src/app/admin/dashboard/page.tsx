@@ -1,10 +1,12 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { getAdminSessionFromRequestCookie } from '@/lib/adminAuth';
 
 async function isAuthenticated() {
   const cookieStore = await cookies();
-  const session = cookieStore.get('admin_session')?.value;
-  return session === 'authenticated';
+  const sessionCookie = cookieStore.get('admin_session')?.value;
+  const session = getAdminSessionFromRequestCookie(sessionCookie);
+  return session !== null;
 }
 
 export default async function AdminDashboard() {
