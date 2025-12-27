@@ -515,4 +515,5 @@ export default function SubcontractorJoinPage() {
           </div>
         )}
       </main>
-  );
+    );
+  }
