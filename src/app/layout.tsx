@@ -81,6 +81,11 @@ export default function RootLayout({
             strategy="afterInteractive"
           />
         )}
+        {/* Tidio Live Chat Widget */}
+        <Script
+          src="//code.tidio.co/burchcontracting.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

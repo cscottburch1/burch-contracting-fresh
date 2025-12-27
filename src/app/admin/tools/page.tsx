@@ -135,15 +135,41 @@ export default function AdminToolsPage() {
               </div>
             </a>
 
-            <div className="bg-gray-100 rounded-xl shadow p-6 opacity-60">
+            <a
+              href="/admin/tools/notifications"
+              className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition group"
+            >
               <div className="flex items-center mb-3">
                 <span className="text-4xl mr-3">📧</span>
-                <h3 className="text-xl font-bold text-gray-700">Email Templates</h3>
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600">
+                  Email & SMS Templates
+                </h3>
               </div>
-              <p className="text-gray-500">
-                Customize email templates (Coming Soon)
+              <p className="text-gray-600">
+                Create and manage email and SMS notification templates
               </p>
-            </div>
+              <div className="mt-4 text-sm font-semibold text-blue-600">
+                Manage →
+              </div>
+            </a>
+
+            <a
+              href="/admin/tools/projects"
+              className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition group"
+            >
+              <div className="flex items-center mb-3">
+                <span className="text-4xl mr-3">🏠</span>
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600">
+                  Recent Projects Gallery
+                </h3>
+              </div>
+              <p className="text-gray-600">
+                Showcase completed projects on homepage with photos
+              </p>
+              <div className="mt-4 text-sm font-semibold text-blue-600">
+                Manage →
+              </div>
+            </a>
           </div>
         </section>
 
@@ -173,7 +199,7 @@ export default function AdminToolsPage() {
             </a>
 
             <a
-              href="/admin/subcontractors"
+              href="/admin/subcontractors/manage"
               className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition group"
             >
               <div className="flex items-center mb-3">
@@ -183,7 +209,7 @@ export default function AdminToolsPage() {
                 </h3>
               </div>
               <p className="text-gray-600">
-                Review applications, manage contractors, and assign bids
+                Add, edit, delete, and manage contractor information
               </p>
               <div className="mt-4 text-sm font-semibold text-blue-600">
                 Manage →
@@ -264,6 +290,24 @@ export default function AdminToolsPage() {
             Website Content
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a
+              href="/admin/tools/banners"
+              className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition group"
+            >
+              <div className="flex items-center mb-3">
+                <span className="text-4xl mr-3">📢</span>
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600">
+                  Banner Management
+                </h3>
+              </div>
+              <p className="text-gray-600">
+                Create and manage promotional banners on homepage
+              </p>
+              <div className="mt-4 text-sm font-semibold text-blue-600">
+                Manage →
+              </div>
+            </a>
+
             <div className="bg-gray-100 rounded-xl shadow p-6 opacity-60">
               <div className="flex items-center mb-3">
                 <span className="text-4xl mr-3">🎨</span>

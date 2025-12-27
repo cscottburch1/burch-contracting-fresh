@@ -22,6 +22,66 @@ export async function PATCH(
     const values: any[] = [];
 
     // Allow updating these fields
+    if (body.company_name !== undefined) {
+      updates.push('company_name = ?');
+      values.push(body.company_name);
+    }
+
+    if (body.contact_name !== undefined) {
+      updates.push('contact_name = ?');
+      values.push(body.contact_name);
+    }
+
+    if (body.email !== undefined) {
+      updates.push('email = ?');
+      values.push(body.email);
+    }
+
+    if (body.phone !== undefined) {
+      updates.push('phone = ?');
+      values.push(body.phone);
+    }
+
+    if (body.address !== undefined) {
+      updates.push('address = ?');
+      values.push(body.address);
+    }
+
+    if (body.city !== undefined) {
+      updates.push('city = ?');
+      values.push(body.city);
+    }
+
+    if (body.state !== undefined) {
+      updates.push('state = ?');
+      values.push(body.state);
+    }
+
+    if (body.zip_code !== undefined) {
+      updates.push('zip_code = ?');
+      values.push(body.zip_code);
+    }
+
+    if (body.specialties !== undefined) {
+      updates.push('specialties = ?');
+      values.push(JSON.stringify(body.specialties));
+    }
+
+    if (body.years_experience !== undefined) {
+      updates.push('years_experience = ?');
+      values.push(body.years_experience);
+    }
+
+    if (body.insurance_info !== undefined) {
+      updates.push('insurance_info = ?');
+      values.push(body.insurance_info);
+    }
+
+    if (body.license_number !== undefined) {
+      updates.push('license_number = ?');
+      values.push(body.license_number);
+    }
+
     if (body.status !== undefined) {
       updates.push('status = ?');
       values.push(body.status);
@@ -139,5 +199,30 @@ export async function GET(
   } catch (error) {
     console.error('Error fetching subcontractor:', error);
     return NextResponse.json({ error: 'Failed to fetch subcontractor' }, { status: 500 });
+  }
+}
+
+// DELETE /api/admin/subcontractors/[id] - Delete subcontractor
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const currentUser = await getCurrentAdminUser();
+    
+    if (!currentUser) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
+    const { id } = await params;
+    const subId = parseInt(id);
+
+    // Delete subcontractor (cascading deletes will handle related records)
+    await query('DELETE FROM subcontractors WHERE id = ?', [subId]);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting subcontractor:', error);
+    return NextResponse.json({ error: 'Failed to delete subcontractor' }, { status: 500 });
   }
 }

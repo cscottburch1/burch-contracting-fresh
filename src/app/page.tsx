@@ -8,7 +8,8 @@ import { ProjectCard } from '@/components/ui/ProjectCard';
 import { Badge } from '@/components/ui/Badge';
 import { businessConfig } from '@/config/business';
 import Script from 'next/script';
-import EmergencyBanner from '@/components/EmergencyBanner';
+import DynamicBanners from '@/components/EmergencyBanner';
+import RecentProjects from '@/components/RecentProjects';
 
 export default function HomePage() {
   const structuredData = {
@@ -78,7 +79,7 @@ export default function HomePage() {
       />
       
       {/* Emergency Services Banner */}
-      <EmergencyBanner />
+      <DynamicBanners />
 
       <section className="relative bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white py-24 md:py-40 overflow-hidden">{/* Animated background pattern */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAgNC40MTgtMy41ODIgOC04IDhzLTgtMy41ODItOC04IDMuNTgyLTggOC04IDggMy41ODIgOCA4em0wIDI4YzAgNC40MTgtMy41ODIgOC04IDhzLTgtMy41ODItOC04IDMuNTgyLTggOC04IDggMy41ODIgOCA4eiIvPjwvZz48L2c+PC9zdmc+')] opacity-10 animate-pulse"></div>
@@ -295,28 +296,8 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section background="blue" padding="lg">
-        <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Recent Projects
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            See the quality and craftsmanship we bring to every project
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {businessConfig.projects.slice(0, 6).map((project, index) => (
-            <div key={project.id} className={`animate-scale-in opacity-0 stagger-${(index % 3) + 1} hover-lift`}>
-              <ProjectCard
-                title={project.title}
-                category={project.category}
-                description={project.description}
-              />
-            </div>
-          ))}
-        </div>
-      </Section>
+      {/* Recent Projects - Dynamic from Database */}
+      <RecentProjects />
 
       <Section background="white" padding="lg">
         <div className="text-center mb-16 animate-fade-in-up">

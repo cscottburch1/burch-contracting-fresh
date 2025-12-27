@@ -17,6 +17,8 @@ interface FormData {
   timeframe: string;
   referralSource: string;
   description: string;
+  preferredDate: string;
+  preferredTime: string;
   website: string; // Honeypot field
 }
 
@@ -35,6 +37,8 @@ export default function ContactPage() {
     timeframe: '',
     referralSource: '',
     description: '',
+    preferredDate: '',
+    preferredTime: '',
     website: '' // Honeypot field
   });
 
@@ -59,6 +63,22 @@ export default function ContactPage() {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.address.trim()) {
+      newErrors.address = 'Address or city/area is required';
+    }
+
+    if (!formData.serviceType) {
+      newErrors.serviceType = 'Service type is required';
+    }
+
+    if (!formData.budgetRange) {
+      newErrors.budgetRange = 'Budget range is required';
+    }
+
+    if (!formData.timeframe) {
+      newErrors.timeframe = 'Project timeframe is required';
     }
 
     if (!formData.description.trim()) {
@@ -121,6 +141,8 @@ export default function ContactPage() {
           timeframe: '',
           referralSource: '',
           description: '',
+          preferredDate: '',
+          preferredTime: '',
           website: ''
         });
       } else {
@@ -256,7 +278,7 @@ export default function ContactPage() {
 
                   <div>
                     <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Address or City/Area
+                      Address or City/Area <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -264,40 +286,154 @@ export default function ContactPage() {
                       name="address"
                       value={formData.address}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                      placeholder="YourTown, ST"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                        errors.address ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      placeholder="Simpsonville, SC"
+                      required
                     />
+                    {errors.address && <p className="mt-1 text-sm text-red-500">{errors.address}</p>}
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="serviceType" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Service Type
+                      Service Type <span className="text-red-500">*</span>
                     </label>
                     <select
                       id="serviceType"
                       name="serviceType"
                       value={formData.serviceType}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                        errors.serviceType ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      required
                     >
                       <option value="">Select a service...</option>
                       {businessConfig.services.map(service => (
                         <option key={service.id} value={service.id}>{service.title}</option>
                       ))}
                     </select>
+                    {errors.serviceType && <p className="mt-1 text-sm text-red-500">{errors.serviceType}</p>}
                   </div>
 
                   <div>
                     <label htmlFor="budgetRange" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Budget Range
+                      Budget Range <span className="text-red-500">*</span>
                     </label>
                     <select
                       id="budgetRange"
                       name="budgetRange"
                       value={formData.budgetRange}
                       onChange={handleChange}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                        errors.budgetRange ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      required
+                    >
+                      <option value="">Select budget range...</option>
+                      <option value="under-5k">Under $5,000</option>
+                      <option value="5k-15k">$5,000 - $15,000</option>
+                      <option value="15k-30k">$15,000 - $30,000</option>
+                      <option value="30k-50k">$30,000 - $50,000</option>
+                      <option value="50k-100k">$50,000 - $100,000</option>
+                      <option value="over-100k">Over $100,000</option>
+                      <option value="flexible">Flexible/Not Sure</option>
+                    </select>
+                    {errors.budgetRange && <p className="mt-1 text-sm text-red-500">{errors.budgetRange}</p>}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="timeframe" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Project Timeframe <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="timeframe"
+                      name="timeframe"
+                      value={formData.timeframe}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                        errors.timeframe ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      required
+                    >
+                      <option value="">Select timeframe...</option>
+                      <option value="asap">As Soon As Possible</option>
+                      <option value="within-month">Within 1 Month</option>
+                      <option value="1-3-months">1-3 Months</option>
+                      <option value="3-6-months">3-6 Months</option>
+                      <option value="planning">Just Planning</option>
+                    </select>
+                    {errors.timeframe && <p className="mt-1 text-sm text-red-500">{errors.timeframe}</p>}
+                  </div>
+
+                  <div>
+                    <label htmlFor="referralSource" className="block text-sm font-semibold text-gray-700 mb-2">
+                      How Did You Hear About Us?
+                    </label>
+                    <select
+                      id="referralSource"
+                      name="referralSource"
+                      value={formData.referralSource}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    >
+                      <option value="">Select source...</option>
+                      <option value="google">Google Search</option>
+                      <option value="facebook">Facebook</option>
+                      <option value="referral">Friend/Family Referral</option>
+                      <option value="previous-customer">Previous Customer</option>
+                      <option value="yard-sign">Yard Sign</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="preferredDate" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Preferred Consultation Date
+                    </label>
+                    <input
+                      type="date"
+                      id="preferredDate"
+                      name="preferredDate"
+                      value={formData.preferredDate}
+                      onChange={handleChange}
+                      min={new Date().toISOString().split('T')[0]}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="preferredTime" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Preferred Time
+                    </label>
+                    <select
+                      id="preferredTime"
+                      name="preferredTime"
+                      value={formData.preferredTime}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    >
+                      <option value="">Select time...</option>
+                      <option value="morning">Morning (8am-12pm)</option>
+                      <option value="afternoon">Afternoon (12pm-4pm)</option>
+                      <option value="evening">Evening (4pm-7pm)</option>
+                      <option value="flexible">Flexible</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-blue-800">
+                    <strong>Note:</strong> Requested dates and times are not guaranteed but we will do our best to accommodate your schedule. We'll confirm your appointment within 24 hours.
+                  </p>
+                </div>
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     >
                       <option value="">Select a range...</option>
