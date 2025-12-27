@@ -4,7 +4,7 @@ import mysql from '@/lib/mysql';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const cookieStore = await cookies();
@@ -14,7 +14,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const proposalId = params.id;
+    const { id: proposalId } = await context.params;
 
     const [proposals] = await mysql.query(
       `SELECT * FROM proposals WHERE id = ?`,
@@ -38,7 +38,7 @@ export async function GET(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const cookieStore = await cookies();
@@ -48,7 +48,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const proposalId = params.id;
+    const { id: proposalId } = await context.params;
     const data = await request.json();
     const { status } = data;
 
