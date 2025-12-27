@@ -6,8 +6,11 @@ import { useRouter } from 'next/navigation';
 export default function MigrationPage() {
   const router = useRouter();
   const [running, setRunning] = useState(false);
+  const [passwordResetRunning, setPasswordResetRunning] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const [passwordResetResult, setPasswordResetResult] = useState<any>(null);
   const [error, setError] = useState('');
+  const [passwordResetError, setPasswordResetError] = useState('');
 
   const runMigration = async () => {
     setRunning(true);
@@ -34,11 +37,37 @@ export default function MigrationPage() {
     }
   };
 
+  const runPasswordResetMigration = async () => {
+    setPasswordResetRunning(true);
+    setPasswordResetError('');
+    setPasswordResetResult(null);
+
+    try {
+      const res = await fetch('/api/admin/migrate-password-reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setPasswordResetResult(data);
+      } else {
+        setPasswordResetError(data.error || 'Migration failed');
+      }
+    } catch (err: any) {
+      setPasswordResetError(err.message || 'Failed to run migration');
+    } finally {
+      setPasswordResetRunning(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Subcontractor Migration */}
         <div className="bg-white rounded-xl shadow-lg p-10">
-          <h1 className="text-4xl font-bold mb-4">Database Migration</h1>
+          <h1 className="text-4xl font-bold mb-4">Subcontractor Migration</h1>
           <p className="text-gray-600 mb-8">
             Click the button below to create the subcontractor database tables.
           </p>
@@ -87,15 +116,68 @@ export default function MigrationPage() {
               </button>
             </div>
           )}
+        </div>
 
-          <div className="mt-8">
+        {/* Password Reset Migration */}
+        <div className="bg-white rounded-xl shadow-lg p-10">
+          <h1 className="text-4xl font-bold mb-4">Password Reset Migration</h1>
+          <p className="text-gray-600 mb-8">
+            Click the button below to create the password reset tokens table for customer portal.
+          </p>
+
+          {!passwordResetResult && !passwordResetError && (
             <button
-              onClick={() => router.push('/admin/dashboard')}
-              className="text-gray-600 hover:text-gray-800 font-semibold"
+              onClick={runPasswordResetMigration}
+              disabled={passwordResetRunning}
+              className="bg-green-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-green-700 transition disabled:opacity-50 text-xl"
             >
-              ← Back to Dashboard
+              {passwordResetRunning ? 'Running Migration...' : 'Run Password Reset Migration'}
             </button>
-          </div>
+          )}
+
+          {passwordResetResult && (
+            <div className="bg-green-100 border border-green-400 text-green-800 p-6 rounded-lg mb-6">
+              <h2 className="text-2xl font-bold mb-4">✓ Migration Successful!</h2>
+              <div className="space-y-2">
+                {passwordResetResult.results?.map((line: string, idx: number) => (
+                  <div key={idx} className="text-sm">{line}</div>
+                ))}
+              </div>
+              <div className="mt-6">
+                <button
+                  onClick={() => router.push('/portal')}
+                  className="bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+                >
+                  Go to Customer Portal
+                </button>
+              </div>
+            </div>
+          )}
+
+          {passwordResetError && (
+            <div className="bg-red-100 border border-red-400 text-red-800 p-6 rounded-lg mb-6">
+              <h2 className="text-2xl font-bold mb-4">✗ Migration Failed</h2>
+              <p className="mb-4">{passwordResetError}</p>
+              <button
+                onClick={() => {
+                  setPasswordResetError('');
+                  runPasswordResetMigration();
+                }}
+                className="bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition"
+              >
+                Try Again
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="text-center">
+          <button
+            onClick={() => router.push('/admin/dashboard')}
+            className="text-gray-600 hover:text-gray-800 font-semibold"
+          >
+            ← Back to Dashboard
+          </button>
         </div>
       </div>
     </div>
