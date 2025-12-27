@@ -4,9 +4,10 @@ import { cookies } from 'next/headers';
 export async function POST(request: Request) {
   try {
     const cookieStore = await cookies();
-    const adminToken = cookieStore.get('admin_token');
+    // Use the admin session cookie set at login
+    const adminSession = cookieStore.get('admin_session');
     
-    if (!adminToken) {
+    if (!adminSession) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

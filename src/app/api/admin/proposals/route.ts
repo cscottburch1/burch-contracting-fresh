@@ -5,9 +5,10 @@ import mysql from '@/lib/mysql';
 export async function POST(request: Request) {
   try {
     const cookieStore = await cookies();
-    const adminToken = cookieStore.get('admin_token');
+    // Use the same cookie name set by admin login
+    const adminSession = cookieStore.get('admin_session');
     
-    if (!adminToken) {
+    if (!adminSession) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
