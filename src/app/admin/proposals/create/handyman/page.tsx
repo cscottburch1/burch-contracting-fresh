@@ -212,14 +212,20 @@ export default function HandymanProposalPage() {
     setItems(items.filter(item => item.id !== id));
   };
 
+  const SERVICE_CHARGE = 69.00;
+  const LABOR_THRESHOLD = 199.00;
+
   const calculateTotals = () => {
-    const subtotal = items.reduce((sum, item) => sum + item.total, 0);
+    const laborSubtotal = items.reduce((sum, item) => sum + item.total, 0);
+    // Waive service charge if labor is over $199
+    const serviceCharge = laborSubtotal > LABOR_THRESHOLD ? 0 : SERVICE_CHARGE;
+    const subtotal = laborSubtotal + serviceCharge;
     const tax = subtotal * (taxRate / 100);
     const total = subtotal + tax;
-    return { subtotal, tax, total };
+    return { laborSubtotal, serviceCharge, subtotal, tax, total };
   };
 
-  const { subtotal, tax, total } = calculateTotals();
+  const { laborSubtotal, serviceCharge, subtotal, tax, total } = calculateTotals();
 
   const handleSave = async () => {
     if (!customerName || items.length === 0) {
@@ -473,6 +479,17 @@ export default function HandymanProposalPage() {
           <div className="flex justify-end mb-8">
             <div className="w-64">
               <div className="flex justify-between py-2 border-b border-gray-200">
+                <span className="text-gray-700">Labor Subtotal:</span>
+                <span className="font-semibold">${laborSubtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-200">
+                <span className="text-gray-700">Service Charge <span className="text-xs">(due in advance)</span>:</span>
+                <span className="font-semibold">{serviceCharge === 0 ? <span className="text-green-600 line-through">${SERVICE_CHARGE.toFixed(2)}</span> : `$${serviceCharge.toFixed(2)}`}</span>
+              </div>
+              {serviceCharge === 0 && (
+                <div className="text-xs text-green-600 py-1 italic">✓ Waived (labor over $199)</div>
+              )}
+              <div className="flex justify-between py-2 border-b border-gray-200">
                 <span className="text-gray-700">Subtotal:</span>
                 <span className="font-semibold">${subtotal.toFixed(2)}</span>
               </div>
@@ -489,8 +506,12 @@ export default function HandymanProposalPage() {
 
           {/* Terms & Notes */}
           <div className="border-t border-gray-300 pt-6">
+            <div className="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
+              <p className="text-sm text-blue-900"><strong>Note:</strong> All labor rates quoted above are labor only. Materials will be charged as needed per job.</p>
+            </div>
             <h3 className="font-bold text-gray-900 mb-3">Terms & Conditions:</h3>
             <ul className="text-sm text-gray-700 space-y-1 mb-4">
+              <li>• Service charge ($69.00) is due in advance to schedule work (waived on jobs with labor over $199)</li>
               <li>• 50% deposit required to schedule work</li>
               <li>• Balance due upon completion</li>
               <li>• All work guaranteed for 90 days</li>
@@ -615,6 +636,9 @@ export default function HandymanProposalPage() {
 
           {/* Add Services */}
           <div className="mb-8">
+            <div className="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
+              <p className="text-sm text-blue-900"><strong>Note:</strong> Service rates below are for labor only. Materials will be charged as needed per job. A $69 service charge will be applied unless labor exceeds $199.</p>
+            </div>
             <h3 className="text-lg font-bold text-gray-900 mb-4">Add Services</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div>
@@ -755,6 +779,14 @@ export default function HandymanProposalPage() {
               </div>
             </div>
             <div className="space-y-2">
+              <div className="flex justify-between text-lg">
+                <span>Labor Subtotal:</span>
+                <span className="font-semibold">${laborSubtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-lg">
+                <span>Service Charge (due in advance):</span>
+                <span className="font-semibold">{serviceCharge === 0 ? <span className="text-green-600"><del>${SERVICE_CHARGE.toFixed(2)}</del> ✓ Waived</span> : `$${serviceCharge.toFixed(2)}`}</span>
+              </div>
               <div className="flex justify-between text-lg">
                 <span>Subtotal:</span>
                 <span className="font-semibold">${subtotal.toFixed(2)}</span>
