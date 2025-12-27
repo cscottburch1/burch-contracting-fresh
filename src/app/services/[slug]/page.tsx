@@ -318,6 +318,18 @@ export default async function ServicePage({ params }: ServicePageProps) {
                   Price Calculator
                 </Button>
               )}
+              {slug === 'remodeling' && (
+                <Button variant="primary" size="lg" href="/calculator/remodeling" className="bg-green-600 hover:bg-green-700">
+                  <Icon name="Calculator" size={20} />
+                  Price Calculator
+                </Button>
+              )}
+              {slug === 'additions' && (
+                <Button variant="primary" size="lg" href="/calculator/additions" className="bg-green-600 hover:bg-green-700">
+                  <Icon name="Calculator" size={20} />
+                  Price Calculator
+                </Button>
+              )}
               <Button variant="primary" size="lg" href="/contact">
                 Get Free Estimate
                 <Icon name="ArrowRight" size={20} />
