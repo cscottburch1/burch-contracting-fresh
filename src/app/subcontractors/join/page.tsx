@@ -299,9 +299,10 @@ export default function SubcontractorJoinPage() {
 
         {/* Application Form Modal */}
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-            <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full my-8">
-              <div className="p-8">
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto">
+            <div className="min-h-screen flex items-center justify-center p-4">
+              <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full my-8">
+                <div className="p-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-3xl font-bold text-gray-900">Subcontractor Application</h2>
                   <button 
@@ -476,9 +477,9 @@ export default function SubcontractorJoinPage() {
                   <div>
                     <h3 className="text-xl font-bold mb-4 text-gray-900">Your Specialties *</h3>
                     <p className="text-sm text-gray-600 mb-3">Select all that apply</p>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-64 overflow-y-auto border border-gray-200 rounded-lg p-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-4 bg-gray-50">
                       {SUBCONTRACTOR_SPECIALTIES.map((specialty) => (
-                        <label key={specialty} className="flex items-center space-x-2 cursor-pointer">
+                        <label key={specialty} className="flex items-center space-x-2 cursor-pointer hover:bg-white hover:shadow-sm rounded p-1 transition">
                           <input 
                             type="checkbox" 
                             name="specialties"
@@ -492,7 +493,7 @@ export default function SubcontractorJoinPage() {
                   </div>
 
                   {/* Submit Button */}
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 pt-4 border-t border-gray-200">
                     <button 
                       type="button"
                       onClick={() => setShowForm(false)}
@@ -512,6 +513,7 @@ export default function SubcontractorJoinPage() {
                 </form>
               </div>
             </div>
+          </div>
           </div>
         )}
       </main>
