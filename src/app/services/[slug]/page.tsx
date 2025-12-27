@@ -312,6 +312,12 @@ export default async function ServicePage({ params }: ServicePageProps) {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in-up stagger-3 opacity-0">
+              {slug === 'handyman' && (
+                <Button variant="primary" size="lg" href="/calculator/handyman" className="bg-green-600 hover:bg-green-700">
+                  <Icon name="Calculator" size={20} />
+                  Price Calculator
+                </Button>
+              )}
               <Button variant="primary" size="lg" href="/contact">
                 Get Free Estimate
                 <Icon name="ArrowRight" size={20} />
