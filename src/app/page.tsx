@@ -81,7 +81,7 @@ export default function HomePage() {
         
         {/* Floating decorative elements */}
         <div className="absolute top-20 right-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
@@ -206,11 +206,11 @@ export default function HomePage() {
           </a>
 
           <a href="/service-areas/five-forks" className="group">
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-purple-600">
-              <Icon name="MapPin" size={32} className="text-purple-600 mx-auto mb-3" />
+            <div className="bg-gradient-to-br from-sky-50 to-sky-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-sky-600">
+              <Icon name="MapPin" size={32} className="text-sky-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold text-gray-900 mb-1">Five Forks</h3>
               <p className="text-sm text-gray-600 mb-3">Family Friendly</p>
-              <div className="flex items-center justify-center text-purple-600 text-sm font-semibold">
+              <div className="flex items-center justify-center text-sky-600 text-sm font-semibold">
                 Learn More
                 <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -254,11 +254,11 @@ export default function HomePage() {
           </a>
 
           <a href="/service-areas/mauldin" className="group">
-            <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-indigo-600">
-              <Icon name="MapPin" size={32} className="text-indigo-600 mx-auto mb-3" />
+            <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-cyan-600">
+              <Icon name="MapPin" size={32} className="text-cyan-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold text-gray-900 mb-1">Mauldin</h3>
               <p className="text-sm text-gray-600 mb-3">Established</p>
-              <div className="flex items-center justify-center text-indigo-600 text-sm font-semibold">
+              <div className="flex items-center justify-center text-cyan-600 text-sm font-semibold">
                 Learn More
                 <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
               </div>
