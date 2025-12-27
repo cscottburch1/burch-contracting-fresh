@@ -17,6 +17,7 @@ interface FormData {
   timeframe: string;
   referralSource: string;
   description: string;
+  website: string; // Honeypot field
 }
 
 interface FormErrors {
@@ -33,7 +34,8 @@ export default function ContactPage() {
     budgetRange: '',
     timeframe: '',
     referralSource: '',
-    description: ''
+    description: '',
+    website: '' // Honeypot field
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -70,6 +72,13 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Honeypot check - if filled, it's a bot
+    if (formData.website) {
+      console.log('Spam detected: honeypot filled');
+      setErrors({ submit: 'Something went wrong. Please try again.' });
+      return;
+    }
+
     if (!validateForm()) {
       return;
     }
@@ -77,12 +86,27 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     try {
+      // Get reCAPTCHA token
+      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+      let recaptchaToken = '';
+
+      if (siteKey && typeof window !== 'undefined' && (window as any).grecaptcha) {
+        try {
+          recaptchaToken = await (window as any).grecaptcha.execute(siteKey, { action: 'contact_form' });
+        } catch (recaptchaError) {
+          console.error('reCAPTCHA error:', recaptchaError);
+        }
+      }
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken,
+        }),
       });
 
       if (response.ok) {
@@ -96,10 +120,12 @@ export default function ContactPage() {
           budgetRange: '',
           timeframe: '',
           referralSource: '',
-          description: ''
+          description: '',
+          website: ''
         });
       } else {
-        setErrors({ submit: 'Something went wrong. Please try again or call us directly.' });
+        const errorData = await response.json();
+        setErrors({ submit: errorData.error || 'Something went wrong. Please try again or call us directly.' });
       }
     } catch (error) {
       setErrors({ submit: 'Something went wrong. Please try again or call us directly.' });
@@ -344,6 +370,20 @@ export default function ContactPage() {
                     placeholder="Tell us about your project... What work needs to be done? Any specific requirements or concerns?"
                   />
                   {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description}</p>}
+                </div>
+
+                {/* Honeypot field - hidden from humans, visible to bots */}
+                <div className="hidden" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    type="text"
+                    id="website"
+                    name="website"
+                    value={formData.website}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
                 </div>
 
                 {errors.submit && (
