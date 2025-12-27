@@ -36,6 +36,27 @@ export async function sendLeadEmail(opts: {
   });
 }
 
+// Generic email sending function
+export async function sendEmail(to: string, subject: string, body: string) {
+  const from = process.env.SMTP_FROM || 'no-reply@localhost';
+  const transporter = getTransport();
+
+  await transporter.sendMail({
+    from,
+    to,
+    subject,
+    text: body,
+    html: body.replace(/\n/g, '<br>'),
+  });
+}{
+    from,
+    to: opts.to,
+    subject: opts.subject,
+    text: opts.text,
+    replyTo: opts.replyTo,
+  });
+}
+
 export async function sendPasswordResetEmail(opts: {
   to: string;
   name: string;

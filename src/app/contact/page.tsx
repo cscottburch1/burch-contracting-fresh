@@ -434,18 +434,6 @@ export default function ContactPage() {
                     <strong>Note:</strong> Requested dates and times are not guaranteed but we will do our best to accommodate your schedule. We'll confirm your appointment within 24 hours.
                   </p>
                 </div>
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    >
-                      <option value="">Select a range...</option>
-                      <option value="under-1000">Under $1,000</option>
-                      <option value="1000-5000">$1,000 - $5,000</option>
-                      <option value="5000-10000">$5,000 - $10,000</option>
-                      <option value="10000-25000">$10,000 - $25,000</option>
-                      <option value="25000-plus">$25,000+</option>
-                      <option value="not-sure">Not sure yet</option>
-                    </select>
-                  </div>
-                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
