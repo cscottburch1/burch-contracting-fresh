@@ -7,7 +7,7 @@ import path from 'path';
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    const user = await getCurrentAdminUser(request);
+    const user = await getCurrentAdminUser();
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

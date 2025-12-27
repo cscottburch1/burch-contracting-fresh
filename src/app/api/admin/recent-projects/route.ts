@@ -5,7 +5,7 @@ import { getCurrentAdminUser } from '@/lib/adminAuth';
 // GET - List all recent projects for admin
 export async function GET(request: NextRequest) {
   try {
-    const user = await getCurrentAdminUser(request);
+    const user = await getCurrentAdminUser();
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
 // POST - Create new project
 export async function POST(request: NextRequest) {
   try {
-    const user = await getCurrentAdminUser(request);
+    const user = await getCurrentAdminUser();
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
