@@ -73,10 +73,22 @@ interface ProposalItem {
   notes: string;
 }
 
+interface Customer {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+}
+
 export default function HandymanProposalPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [showPreview, setShowPreview] = useState(false);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [emailing, setEmailing] = useState(false);
   
   // Proposal data
   const [proposalNumber, setProposalNumber] = useState('');
@@ -97,6 +109,7 @@ export default function HandymanProposalPage() {
   useEffect(() => {
     checkAuth();
     generateProposalNumber();
+    fetchCustomers();
   }, []);
 
   const checkAuth = async () => {
@@ -117,6 +130,38 @@ export default function HandymanProposalPage() {
     const year = new Date().getFullYear();
     const random = Math.floor(Math.random() * 900) + 100; // 100-999
     setProposalNumber(`BC-${year}-${random}`);
+  };
+
+  const fetchCustomers = async () => {
+    try {
+      const res = await fetch('/api/admin/customers');
+      if (res.ok) {
+        const data = await res.json();
+        setCustomers(data.customers || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch customers:', err);
+    }
+  };
+
+  const handleCustomerSelect = (customerId: string) => {
+    if (!customerId) {
+      setSelectedCustomerId(null);
+      setCustomerName('');
+      setCustomerEmail('');
+      setCustomerPhone('');
+      setCustomerAddress('');
+      return;
+    }
+    
+    const customer = customers.find(c => c.id === parseInt(customerId));
+    if (customer) {
+      setSelectedCustomerId(customer.id);
+      setCustomerName(customer.name);
+      setCustomerEmail(customer.email || '');
+      setCustomerPhone(customer.phone || '');
+      setCustomerAddress(customer.address || '');
+    }
   };
 
   const addServiceItem = () => {
@@ -176,8 +221,107 @@ export default function HandymanProposalPage() {
 
   const { subtotal, tax, total } = calculateTotals();
 
-  const handleSave = () => {
-    alert('Save functionality coming soon! This will save to database.');
+  const handleSave = async () => {
+    if (!customerName || items.length === 0) {
+      alert('Please add customer name and at least one service item.');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const proposalData = {
+        proposalNumber,
+        customerId: selectedCustomerId,
+        customerName,
+        customerEmail,
+        customerPhone,
+        customerAddress,
+        proposalDate,
+        expirationDate,
+        items: items.map(item => ({
+          service: item.service,
+          quantity: item.quantity,
+          price: item.price,
+          total: item.total,
+          notes: item.notes
+        })),
+        subtotal,
+        taxRate,
+        tax,
+        total,
+        notes,
+        proposalType: 'Handyman Services',
+        status: 'draft'
+      };
+
+      const res = await fetch('/api/admin/proposals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(proposalData)
+      });
+
+      if (res.ok) {
+        alert('Proposal saved successfully!');
+      } else {
+        const error = await res.json();
+        alert(`Failed to save: ${error.error || 'Unknown error'}`);
+      }
+    } catch (err) {
+      console.error('Save error:', err);
+      alert('Failed to save proposal. Please try again.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleEmailToCustomer = async () => {
+    if (!customerEmail) {
+      alert('Customer email is required to send proposal.');
+      return;
+    }
+
+    if (!customerName || items.length === 0) {
+      alert('Please complete the proposal before emailing.');
+      return;
+    }
+
+    setEmailing(true);
+    try {
+      const proposalData = {
+        proposalNumber,
+        customerName,
+        customerEmail,
+        customerPhone,
+        customerAddress,
+        proposalDate,
+        expirationDate,
+        items,
+        subtotal,
+        taxRate,
+        tax,
+        total,
+        notes,
+        proposalType: 'Handyman Services'
+      };
+
+      const res = await fetch('/api/admin/proposals/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(proposalData)
+      });
+
+      if (res.ok) {
+        alert(`Proposal sent to ${customerEmail} successfully!`);
+      } else {
+        const error = await res.json();
+        alert(`Failed to send email: ${error.error || 'Unknown error'}`);
+      }
+    } catch (err) {
+      console.error('Email error:', err);
+      alert('Failed to send email. Please try again.');
+    } finally {
+      setEmailing(false);
+    }
   };
 
   const handlePrint = () => {
@@ -219,10 +363,18 @@ export default function HandymanProposalPage() {
                 ✏️ Edit
               </button>
               <button
-                onClick={handleSave}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+                onClick={handleEmailToCustomer}
+                disabled={emailing || !customerEmail}
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition disabled:bg-gray-300"
               >
-                💾 Save
+                {emailing ? '📤 Sending...' : '📧 Email to Customer'}
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:bg-gray-300"
+              >
+                {saving ? '💾 Saving...' : '💾 Save to CRM'}
               </button>
               <button
                 onClick={handlePrint}
@@ -395,6 +547,23 @@ export default function HandymanProposalPage() {
           <div className="mb-8">
             <h3 className="text-lg font-bold text-gray-900 mb-4">Customer Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Select Existing Customer
+                </label>
+                <select
+                  value={selectedCustomerId || ''}
+                  onChange={(e) => handleCustomerSelect(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">-- Select a customer or enter manually below --</option>
+                  {customers.map(customer => (
+                    <option key={customer.id} value={customer.id}>
+                      {customer.name} - {customer.email || customer.phone}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Customer Name *
@@ -409,13 +578,14 @@ export default function HandymanProposalPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
+                  Email *
                 </label>
                 <input
                   type="email"
                   value={customerEmail}
                   onChange={(e) => setCustomerEmail(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  required
                 />
               </div>
               <div>
