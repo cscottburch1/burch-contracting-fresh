@@ -119,7 +119,7 @@ export default function CRMPage() {
     <>
       <section className="bg-gradient-to-br from-blue-900 to-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">CRM Dashboard</h1>
               <p className="text-gray-300">Manage leads and track your sales pipeline</p>
@@ -127,6 +127,20 @@ export default function CRMPage() {
             <Button variant="primary" size="md" href="/contact">
               <Icon name="User" size={20} />
               New Lead
+            </Button>
+          </div>
+          <div className="flex gap-3 pt-4 border-t border-white/20">
+            <Button variant="outline" size="sm" href="/admin/proposals/create" className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-gray-900">
+              <Icon name="FileText" size={16} />
+              Create Proposal
+            </Button>
+            <Button variant="outline" size="sm" href="/admin/invoices/create" className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-gray-900">
+              <Icon name="Receipt" size={16} />
+              Create Invoice
+            </Button>
+            <Button variant="outline" size="sm" href="/admin/dashboard" className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-gray-900">
+              <Icon name="LayoutDashboard" size={16} />
+              Admin Dashboard
             </Button>
           </div>
         </div>
