@@ -37,9 +37,12 @@ export default async function AdminDashboard() {
 
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Management</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <a href="/crm" className="bg-purple-600 text-white p-6 rounded-lg text-center hover:bg-purple-700 transition text-xl font-bold">
               Manage Leads / CRM
+            </a>
+            <a href="/admin/subcontractors" className="bg-orange-600 text-white p-6 rounded-lg text-center hover:bg-orange-700 transition text-xl font-bold">
+              Subcontractors
             </a>
             <a href="/admin/settings" className="bg-indigo-600 text-white p-6 rounded-lg text-center hover:bg-indigo-700 transition text-xl font-bold">
               Team Settings
