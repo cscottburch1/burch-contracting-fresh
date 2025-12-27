@@ -10,16 +10,19 @@ export default function MigrationPage() {
   const [projectTrackerRunning, setProjectTrackerRunning] = useState(false);
   const [messagingRunning, setMessagingRunning] = useState(false);
   const [emergencySettingsRunning, setEmergencySettingsRunning] = useState(false);
+  const [proposalsRunning, setProposalsRunning] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [passwordResetResult, setPasswordResetResult] = useState<any>(null);
   const [projectTrackerResult, setProjectTrackerResult] = useState<any>(null);
   const [messagingResult, setMessagingResult] = useState<any>(null);
   const [emergencySettingsResult, setEmergencySettingsResult] = useState<any>(null);
+  const [proposalsResult, setProposalsResult] = useState<any>(null);
   const [error, setError] = useState('');
   const [passwordResetError, setPasswordResetError] = useState('');
   const [projectTrackerError, setProjectTrackerError] = useState('');
   const [messagingError, setMessagingError] = useState('');
   const [emergencySettingsError, setEmergencySettingsError] = useState('');
+  const [proposalsError, setProposalsError] = useState('');
 
   const runMigration = async () => {
     setRunning(true);
@@ -143,6 +146,31 @@ export default function MigrationPage() {
       setEmergencySettingsError(err.message || 'Failed to run migration');
     } finally {
       setEmergencySettingsRunning(false);
+    }
+  };
+
+  const runProposalsMigration = async () => {
+    setProposalsRunning(true);
+    setProposalsError('');
+    setProposalsResult(null);
+
+    try {
+      const res = await fetch('/api/admin/migrate-proposals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setProposalsResult(data);
+      } else {
+        setProposalsError(data.error || 'Migration failed');
+      }
+    } catch (err: any) {
+      setProposalsError(err.message || 'Failed to run migration');
+    } finally {
+      setProposalsRunning(false);
     }
   };
 
@@ -432,6 +460,64 @@ export default function MigrationPage() {
                 onClick={() => {
                   setEmergencySettingsError('');
                   runEmergencySettingsMigration();
+                }}
+                className="bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition"
+              >
+                Try Again
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Proposals Migration */}
+        <div className="bg-white rounded-xl shadow-lg p-10">
+          <h1 className="text-4xl font-bold mb-4">Proposals System Migration</h1>
+          <p className="text-gray-600 mb-8">
+            Click the button below to create the proposals and customer notes database tables.
+          </p>
+
+          {!proposalsResult && !proposalsError && (
+            <button
+              onClick={runProposalsMigration}
+              disabled={proposalsRunning}
+              className="bg-purple-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-purple-700 transition disabled:opacity-50 text-xl"
+            >
+              {proposalsRunning ? 'Running Migration...' : 'Run Proposals Migration'}
+            </button>
+          )}
+
+          {proposalsResult && (
+            <div className="bg-green-100 border border-green-400 text-green-800 p-6 rounded-lg mb-6">
+              <h2 className="text-2xl font-bold mb-4">✓ Migration Successful!</h2>
+              <div className="space-y-2 mb-4">
+                <p className="font-semibold">{proposalsResult.message}</p>
+                <p className="text-sm">Tables created: proposals, customer_notes</p>
+              </div>
+              <div className="mt-6 space-x-4">
+                <button
+                  onClick={() => router.push('/admin/proposals/create')}
+                  className="bg-purple-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-purple-700 transition"
+                >
+                  Create Your First Proposal
+                </button>
+                <button
+                  onClick={() => router.push('/admin/dashboard')}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
+                >
+                  Back to Dashboard
+                </button>
+              </div>
+            </div>
+          )}
+
+          {proposalsError && (
+            <div className="bg-red-100 border border-red-400 text-red-800 p-6 rounded-lg mb-6">
+              <h2 className="text-2xl font-bold mb-4">✗ Migration Failed</h2>
+              <p className="mb-4">{proposalsError}</p>
+              <button
+                onClick={() => {
+                  setProposalsError('');
+                  runProposalsMigration();
                 }}
                 className="bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition"
               >
