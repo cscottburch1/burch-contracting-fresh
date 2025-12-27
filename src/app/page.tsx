@@ -162,7 +162,7 @@ export default function HomePage() {
                 title={service.title}
                 description={service.description}
                 icon={<Icon name={service.icon as any} size={40} className="text-blue-600" />}
-                href="/contact"
+                href={`/services/${service.id}`}
                 compact
               />
             </div>

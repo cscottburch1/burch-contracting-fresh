@@ -31,7 +31,7 @@ export default function ServicesPage() {
                 title={service.title}
                 description={service.description}
                 icon={<Icon name={service.icon as any} size={48} className="text-blue-600" />}
-                href="/contact"
+                href={`/services/${service.id}`}
               />
             </div>
           ))}
