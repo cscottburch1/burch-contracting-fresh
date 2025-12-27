@@ -22,6 +22,9 @@ export default function LeadDetailPage() {
   const [isImportant, setIsImportant] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState<Partial<Lead>>({});
+  const [showConvertModal, setShowConvertModal] = useState(false);
+  const [convertPassword, setConvertPassword] = useState('');
+  const [converting, setConverting] = useState(false);
 
   useEffect(() => {
     if (leadId) {
@@ -89,6 +92,36 @@ export default function LeadDetailPage() {
       }
     } catch (error) {
       console.error('Error adding note:', error);
+    }
+  };
+
+  const handleConvertToCustomer = async () => {
+    if (!convertPassword.trim()) {
+      alert('Please enter a password for the customer portal');
+      return;
+    }
+
+    setConverting(true);
+    try {
+      const response = await fetch(`/api/admin/leads/${leadId}/convert`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: convertPassword })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(`Lead converted successfully! Customer ID: ${data.customerId}\nPassword: ${convertPassword}\n\nPlease save this password to share with the customer.`);
+        router.push(`/admin/customers/${data.customerId}`);
+      } else {
+        const error = await response.json();
+        alert(error.error || 'Failed to convert lead');
+      }
+    } catch (error) {
+      console.error('Error converting lead:', error);
+      alert('Failed to convert lead');
+    } finally {
+      setConverting(false);
     }
   };
 
@@ -338,6 +371,20 @@ export default function LeadDetailPage() {
             <Card padding="lg">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
               <div className="space-y-3">
+                <Button 
+                  variant="primary" 
+                  size="md" 
+                  onClick={() => setShowConvertModal(true)}
+                  fullWidth
+                  disabled={lead.status === 'won'}
+                >
+                  <Icon name="UserPlus" size={20} />
+                  {lead.status === 'won' ? 'Already Converted' : 'Convert to Customer'}
+                </Button>
+                <Button variant="outline" size="md" href={`/admin/proposals/create/handyman?leadId=${leadId}`} fullWidth>
+                  <Icon name="FileText" size={20} />
+                  Create Proposal
+                </Button>
                 <Button variant="outline" size="md" href={`mailto:${lead.email}`} fullWidth>
                   <Icon name="Mail" size={20} />
                   Send Email
@@ -381,6 +428,71 @@ export default function LeadDetailPage() {
           </div>
         </div>
       </Section>
+
+      {/* Convert to Customer Modal */}
+      {showConvertModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Convert to Customer</h2>
+              <button
+                onClick={() => setShowConvertModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <Icon name="X" size={24} />
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-gray-600 mb-4">
+                This will create a portal account for <strong>{lead.name}</strong> and mark this lead as Won.
+              </p>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <p className="text-sm text-blue-800"><strong>Email:</strong> {lead.email}</p>
+                <p className="text-sm text-blue-800"><strong>Phone:</strong> {lead.phone}</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Set Portal Password *
+                </label>
+                <input
+                  type="text"
+                  value={convertPassword}
+                  onChange={(e) => setConvertPassword(e.target.value)}
+                  placeholder="Enter a password for customer portal"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Share this password with the customer so they can access their project portal.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                fullWidth
+                onClick={() => {
+                  setShowConvertModal(false);
+                  setConvertPassword('');
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                fullWidth
+                onClick={handleConvertToCustomer}
+                disabled={converting || !convertPassword.trim()}
+              >
+                {converting ? 'Converting...' : 'Convert to Customer'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

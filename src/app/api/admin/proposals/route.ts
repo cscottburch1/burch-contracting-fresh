@@ -172,3 +172,38 @@ export async function GET(request: Request) {
     );
   }
 }
+
+export async function PATCH(request: Request) {
+  try {
+    const cookieStore = await cookies();
+    const adminSession = cookieStore.get('admin_session');
+    
+    if (!adminSession) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const data = await request.json();
+    const { id, status } = data;
+
+    if (!id || !status) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    await mysql.query(
+      `UPDATE proposals SET status = ?, updated_at = NOW() WHERE id = ?`,
+      [status, id]
+    );
+
+    return NextResponse.json({ 
+      success: true,
+      message: 'Proposal updated successfully'
+    });
+
+  } catch (error) {
+    console.error('Error updating proposal:', error);
+    return NextResponse.json(
+      { error: 'Failed to update proposal' },
+      { status: 500 }
+    );
+  }
+}
