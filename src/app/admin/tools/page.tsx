@@ -37,8 +37,18 @@ export default function AdminToolsPage() {
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Admin Tools</h1>
-          <p className="text-xl text-gray-600">System utilities and management tools</p>
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">Admin Tools</h1>
+              <p className="text-xl text-gray-600">System utilities and management tools</p>
+            </div>
+            <a
+              href="/admin/dashboard"
+              className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition font-bold"
+            >
+              ← Back to Dashboard
+            </a>
+          </div>
         </div>
 
         {/* Database & System Tools */}
