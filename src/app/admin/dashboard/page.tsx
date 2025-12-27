@@ -47,9 +47,10 @@ export default async function AdminDashboard() {
             <a href="/admin/settings" className="bg-indigo-600 text-white p-6 rounded-lg text-center hover:bg-indigo-700 transition text-xl font-bold">
               Team Settings
             </a>
-            <div className="bg-gray-200 p-6 rounded-lg text-center text-xl font-bold text-gray-500">
-              Analytics (Coming Soon)
-            </div>
+            <a href="/admin/tools" className="bg-teal-600 text-white p-6 rounded-lg text-center hover:bg-teal-700 transition text-xl font-bold flex items-center justify-center gap-2">
+              <span>🛠️</span>
+              Admin Tools
+            </a>
           </div>
         </div>
 
