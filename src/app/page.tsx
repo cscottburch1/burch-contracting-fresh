@@ -173,19 +173,83 @@ export default function HomePage() {
       <Section background="white" padding="lg">
         <div className="text-center mb-12 animate-fade-in-up">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Service Areas
+            <span className="gradient-text">Service Areas</span> We're Proud to Serve
           </h2>
-          <p className="text-xl text-gray-600 mb-8">
-            {businessConfig.serviceArea.description}
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Delivering quality home services throughout the Upstate. Click on your city to learn more about our local expertise.
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up stagger-1 opacity-0">
-          {businessConfig.serviceArea.locations.map((location, index) => (
-            <Badge key={index} variant="blue" className="text-lg px-6 py-3 hover:scale-110 transition-transform cursor-default shadow-md">
-              {location}
-            </Badge>
-          ))}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+          <a href="/service-areas/simpsonville" className="group">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-blue-600">
+              <Icon name="MapPin" size={32} className="text-blue-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Simpsonville</h3>
+              <p className="text-sm text-gray-600 mb-3">Our Home Base</p>
+              <div className="flex items-center justify-center text-blue-600 text-sm font-semibold">
+                Learn More
+                <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </a>
+
+          <a href="/service-areas/greenville" className="group">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-green-600">
+              <Icon name="MapPin" size={32} className="text-green-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Greenville</h3>
+              <p className="text-sm text-gray-600 mb-3">Upstate's Hub</p>
+              <div className="flex items-center justify-center text-green-600 text-sm font-semibold">
+                Learn More
+                <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </a>
+
+          <a href="/service-areas/five-forks" className="group">
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-purple-600">
+              <Icon name="MapPin" size={32} className="text-purple-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Five Forks</h3>
+              <p className="text-sm text-gray-600 mb-3">Family Friendly</p>
+              <div className="flex items-center justify-center text-purple-600 text-sm font-semibold">
+                Learn More
+                <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </a>
+
+          <a href="/service-areas/woodruff" className="group">
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-orange-600">
+              <Icon name="MapPin" size={32} className="text-orange-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Woodruff</h3>
+              <p className="text-sm text-gray-600 mb-3">Historic Charm</p>
+              <div className="flex items-center justify-center text-orange-600 text-sm font-semibold">
+                Learn More
+                <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </a>
+
+          <a href="/service-areas/gray-court" className="group">
+            <div className="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl p-6 text-center hover-lift transition-all duration-200 border-2 border-transparent group-hover:border-teal-600">
+              <Icon name="MapPin" size={32} className="text-teal-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Gray Court</h3>
+              <p className="text-sm text-gray-600 mb-3">Rural Living</p>
+              <div className="flex items-center justify-center text-teal-600 text-sm font-semibold">
+                Learn More
+                <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div className="text-center mt-12">
+          <p className="text-gray-600 mb-4">
+            Also serving Fountain Inn, Mauldin, and surrounding communities
+          </p>
+          <Button variant="outline" href="/contact">
+            <Icon name="Phone" size={20} />
+            Call for Service Availability
+          </Button>
         </div>
       </Section>
 
