@@ -48,13 +48,6 @@ export async function sendEmail(to: string, subject: string, body: string) {
     text: body,
     html: body.replace(/\n/g, '<br>'),
   });
-}{
-    from,
-    to: opts.to,
-    subject: opts.subject,
-    text: opts.text,
-    replyTo: opts.replyTo,
-  });
 }
 
 export async function sendPasswordResetEmail(opts: {
