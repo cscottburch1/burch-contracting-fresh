@@ -251,6 +251,8 @@ export default function HandymanProposalPage() {
           total: item.total,
           notes: item.notes
         })),
+        laborSubtotal,
+        serviceCharge,
         subtotal,
         taxRate,
         tax,
@@ -302,6 +304,8 @@ export default function HandymanProposalPage() {
         proposalDate,
         expirationDate,
         items,
+        laborSubtotal,
+        serviceCharge,
         subtotal,
         taxRate,
         tax,

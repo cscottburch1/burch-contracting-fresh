@@ -20,6 +20,8 @@ export async function POST(request: Request) {
       proposalDate,
       expirationDate,
       items,
+      laborSubtotal,
+      serviceCharge,
       subtotal,
       taxRate,
       tax,
@@ -110,6 +112,17 @@ export async function POST(request: Request) {
 
     <!-- Totals -->
     <div style="margin-left: auto; width: 300px; margin-bottom: 30px;">
+      <div style="padding: 10px; background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; margin-bottom: 15px;">
+        <p style="margin: 0; font-size: 12px; color: #1e40af;"><strong>Note:</strong> All labor rates are labor only. Materials charged as needed per job.</p>
+      </div>
+      <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+        <span style="color: #374151;">Labor Subtotal:</span>
+        <span style="font-weight: 600; color: #111827;">$${laborSubtotal.toFixed(2)}</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+        <span style="color: #374151;">Service Charge <span style="font-size: 11px;">(due in advance)</span>:</span>
+        <span style="font-weight: 600; color: ${serviceCharge === 0 ? '#059669' : '#111827'};">${serviceCharge === 0 ? '<del>$69.00</del> ✓ Waived' : `$${serviceCharge.toFixed(2)}`}</span>
+      </div>
       <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
         <span style="color: #374151;">Subtotal:</span>
         <span style="font-weight: 600; color: #111827;">$${subtotal.toFixed(2)}</span>
@@ -128,6 +141,7 @@ export async function POST(request: Request) {
     <div style="border-top: 1px solid #d1d5db; padding-top: 20px; margin-bottom: 20px;">
       <h3 style="margin: 0 0 10px 0; color: #111827; font-size: 16px;">Terms & Conditions:</h3>
       <ul style="margin: 0; padding-left: 20px; color: #374151; line-height: 1.8;">
+        <li>Service charge ($69.00) is due in advance to schedule work (waived on jobs with labor over $199)</li>
         <li>50% deposit required to schedule work</li>
         <li>Balance due upon completion</li>
         <li>All work guaranteed for 90 days</li>
