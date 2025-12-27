@@ -58,3 +58,68 @@ export async function GET() {
     );
   }
 }
+
+export async function POST(request: Request) {
+  try {
+    const currentUser = await getCurrentAdminUser();
+    if (!currentUser) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const data = await request.json();
+    const {
+      customer_id,
+      project_name,
+      project_type,
+      description,
+      start_date,
+      estimated_completion_date,
+      address_line1,
+      address_line2,
+      city,
+      state,
+      zip_code,
+    } = data;
+
+    if (!customer_id || !project_name || !address_line1 || !city || !state || !zip_code) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    const connection = await pool.getConnection();
+    try {
+      const [result] = await connection.execute(
+        `INSERT INTO projects (
+          customer_id, project_name, project_type, description,
+          start_date, estimated_completion_date,
+          address_line1, address_line2, city, state, zip_code,
+          status, completion_percentage
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'scheduled', 0)`,
+        [
+          customer_id,
+          project_name,
+          project_type || 'Other',
+          description || null,
+          start_date || null,
+          estimated_completion_date || null,
+          address_line1,
+          address_line2 || null,
+          city,
+          state,
+          zip_code,
+        ]
+      );
+
+      const projectId = (result as any).insertId;
+
+      return NextResponse.json({ success: true, projectId });
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error('Error creating project:', error);
+    return NextResponse.json(
+      { error: 'Failed to create project' },
+      { status: 500 }
+    );
+  }
+}
