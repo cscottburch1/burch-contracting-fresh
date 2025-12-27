@@ -41,6 +41,9 @@ export default async function AdminDashboard() {
             <a href="/admin/projects" className="bg-blue-700 text-white p-6 rounded-lg text-center hover:bg-blue-800 transition text-xl font-bold">
               Project Tracker
             </a>
+            <a href="/admin/messages" className="bg-green-600 text-white p-6 rounded-lg text-center hover:bg-green-700 transition text-xl font-bold">
+              Customer Messages
+            </a>
             <a href="/crm" className="bg-purple-600 text-white p-6 rounded-lg text-center hover:bg-purple-700 transition text-xl font-bold">
               Manage Leads / CRM
             </a>

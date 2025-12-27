@@ -8,12 +8,15 @@ export default function MigrationPage() {
   const [running, setRunning] = useState(false);
   const [passwordResetRunning, setPasswordResetRunning] = useState(false);
   const [projectTrackerRunning, setProjectTrackerRunning] = useState(false);
+  const [messagingRunning, setMessagingRunning] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [passwordResetResult, setPasswordResetResult] = useState<any>(null);
   const [projectTrackerResult, setProjectTrackerResult] = useState<any>(null);
+  const [messagingResult, setMessagingResult] = useState<any>(null);
   const [error, setError] = useState('');
   const [passwordResetError, setPasswordResetError] = useState('');
   const [projectTrackerError, setProjectTrackerError] = useState('');
+  const [messagingError, setMessagingError] = useState('');
 
   const runMigration = async () => {
     setRunning(true);
@@ -87,6 +90,31 @@ export default function MigrationPage() {
       setProjectTrackerError(err.message || 'Failed to run migration');
     } finally {
       setProjectTrackerRunning(false);
+    }
+  };
+
+  const runMessagingMigration = async () => {
+    setMessagingRunning(true);
+    setMessagingError('');
+    setMessagingResult(null);
+
+    try {
+      const res = await fetch('/api/admin/migrate-messaging', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessagingResult(data);
+      } else {
+        setMessagingError(data.error || 'Migration failed');
+      }
+    } catch (err: any) {
+      setMessagingError(err.message || 'Failed to run migration');
+    } finally {
+      setMessagingRunning(false);
     }
   };
 
@@ -253,6 +281,69 @@ export default function MigrationPage() {
                 onClick={() => {
                   setProjectTrackerError('');
                   runProjectTrackerMigration();
+                }}
+                className="bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition"
+              >
+                Try Again
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Customer Messaging Migration */}
+        <div className="bg-white rounded-xl shadow-lg p-10">
+          <h1 className="text-4xl font-bold mb-4">Customer Messaging Migration</h1>
+          <p className="text-gray-600 mb-8">
+            Click the button below to create the customer messaging system tables for two-way communication in the portal.
+          </p>
+
+          {!messagingResult && !messagingError && (
+            <button
+              onClick={runMessagingMigration}
+              disabled={messagingRunning}
+              className="bg-indigo-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-indigo-700 transition disabled:opacity-50 text-xl"
+            >
+              {messagingRunning ? 'Running Migration...' : 'Run Messaging Migration'}
+            </button>
+          )}
+
+          {messagingResult && (
+            <div className="bg-green-100 border border-green-400 text-green-800 p-6 rounded-lg mb-6">
+              <h2 className="text-2xl font-bold mb-4">✓ Migration Successful!</h2>
+              <div className="space-y-2 mb-4">
+                <p className="font-semibold">{messagingResult.message}</p>
+                <p className="text-sm">Tables created:</p>
+                <ul className="list-disc list-inside text-sm">
+                  {messagingResult.tables?.map((table: string, idx: number) => (
+                    <li key={idx}>{table}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-6 space-x-4">
+                <button
+                  onClick={() => router.push('/portal/messages')}
+                  className="bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+                >
+                  Go to Customer Messages
+                </button>
+                <button
+                  onClick={() => router.push('/admin/customers')}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
+                >
+                  View Admin Messages
+                </button>
+              </div>
+            </div>
+          )}
+
+          {messagingError && (
+            <div className="bg-red-100 border border-red-400 text-red-800 p-6 rounded-lg mb-6">
+              <h2 className="text-2xl font-bold mb-4">✗ Migration Failed</h2>
+              <p className="mb-4">{messagingError}</p>
+              <button
+                onClick={() => {
+                  setMessagingError('');
+                  runMessagingMigration();
                 }}
                 className="bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition"
               >
