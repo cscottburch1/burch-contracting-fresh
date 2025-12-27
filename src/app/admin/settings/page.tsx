@@ -12,6 +12,8 @@ export default function SettingsPage() {
   const [showEditUser, setShowEditUser] = useState<number | null>(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [emergencyServicesEnabled, setEmergencyServicesEnabled] = useState(false);
+  const [savingEmergency, setSavingEmergency] = useState(false);
   const router = useRouter();
 
   // Form states
@@ -25,6 +27,7 @@ export default function SettingsPage() {
   useEffect(() => {
     checkAuth();
     loadUsers();
+    loadEmergencySettings();
   }, []);
 
   const checkAuth = async () => {
@@ -55,7 +58,40 @@ export default function SettingsPage() {
       setLoading(false);
     }
   };
+  const loadEmergencySettings = async () => {
+    try {
+      const res = await fetch('/api/admin/emergency-settings');
+      if (res.ok) {
+        const data = await res.json();
+        setEmergencyServicesEnabled(data.enabled);
+      }
+    } catch (err) {
+      console.error('Error loading emergency settings:', err);
+    }
+  };
 
+  const toggleEmergencyServices = async () => {
+    setSavingEmergency(true);
+    try {
+      const res = await fetch('/api/admin/emergency-settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enabled: !emergencyServicesEnabled }),
+      });
+
+      if (res.ok) {
+        setEmergencyServicesEnabled(!emergencyServicesEnabled);
+        setSuccess('Emergency services banner updated');
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Failed to update emergency services setting');
+      }
+    } catch (err) {
+      setError('Failed to update emergency services setting');
+    } finally {
+      setSavingEmergency(false);
+    }
+  };
   const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -154,7 +190,42 @@ export default function SettingsPage() {
               {success}
             </div>
           )}
-
+          {/* Emergency Services Banner Toggle */}
+          <div className="mb-8 p-6 bg-gradient-to-r from-red-50 to-orange-50 rounded-lg border border-red-200">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">🚨 Emergency Services Banner</h3>
+                <p className="text-gray-700 mb-1">
+                  Show the emergency services banner on the homepage with 4-hour response messaging.
+                </p>
+                <p className="text-sm text-gray-600">
+                  Turn this off when you're unable to provide emergency services.
+                </p>
+              </div>
+              <div className="ml-6">
+                <button
+                  onClick={toggleEmergencyServices}
+                  disabled={savingEmergency}
+                  className={`relative inline-flex h-12 w-24 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                    emergencyServicesEnabled
+                      ? 'bg-green-600 focus:ring-green-500'
+                      : 'bg-gray-300 focus:ring-gray-400'
+                  } ${savingEmergency ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  <span
+                    className={`inline-block h-10 w-10 transform rounded-full bg-white shadow-lg transition-transform ${
+                      emergencyServicesEnabled ? 'translate-x-12' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+                <p className={`text-center mt-2 font-semibold ${
+                  emergencyServicesEnabled ? 'text-green-700' : 'text-gray-500'
+                }`}>
+                  {emergencyServicesEnabled ? 'ON' : 'OFF'}
+                </p>
+              </div>
+            </div>
+          </div>
           {/* Add User Section */}
           <div className="mb-8">
             <button
