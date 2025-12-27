@@ -50,8 +50,8 @@ export function verifyAdminCookie(value: string | undefined | null): AdminSessio
     const session = JSON.parse(unb64url(payloadB64)) as AdminSession;
     if (!session?.userId || !session?.email || !session?.timestamp) return null;
     
-    // Check if session is expired (12 hours)
-    const maxAge = 12 * 60 * 60 * 1000; // 12 hours in ms
+    // Check if session is expired (2 hours)
+    const maxAge = 2 * 60 * 60 * 1000; // 2 hours in ms
     if (Date.now() - session.timestamp > maxAge) return null;
     
     return session;
@@ -123,7 +123,7 @@ export async function setAdminSessionCookie(user: AdminUser) {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
-    maxAge: 60 * 60 * 12, // 12 hours
+    maxAge: 60 * 60 * 2, // 2 hours
   });
 }
 
@@ -166,6 +166,19 @@ export async function getCurrentAdminUser(): Promise<AdminUser | null> {
   const session = verifyAdminCookie(sessionCookie);
   
   if (!session) return null;
+  
+  // Refresh session if it's been more than 30 minutes since last activity
+  const timeSinceCreation = Date.now() - session.timestamp;
+  const thirtyMinutes = 30 * 60 * 1000;
+  
+  if (timeSinceCreation > thirtyMinutes) {
+    // Get user and refresh session
+    const user = await findAdminById(session.userId);
+    if (user) {
+      await setAdminSessionCookie(user); // This creates a new timestamp
+    }
+    return user;
+  }
   
   return await findAdminById(session.userId);
 }
