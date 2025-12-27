@@ -265,6 +265,7 @@ export default function HandymanProposalPage() {
       const res = await fetch('/api/admin/proposals', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(proposalData)
       });
 
@@ -317,6 +318,7 @@ export default function HandymanProposalPage() {
       const res = await fetch('/api/admin/proposals/email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(proposalData)
       });
 
